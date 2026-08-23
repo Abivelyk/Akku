@@ -1,0 +1,236 @@
+{
+  "images": [
+    {
+      "file": "p01.webp",
+      "orig": "WhatsApp Image 2026-08-10 at 22.07.27 (1)(1).jpeg",
+      "idx": 1,
+      "ultra2": "ultra/p01_x2.jpg",
+      "ultra4": "ultra/p01_x4.jpg"
+    },
+    {
+      "file": "p02.webp",
+      "orig": "WhatsApp Image 2026-08-10 at 22.07.27 (2)(1).jpeg",
+      "idx": 2,
+      "ultra2": "ultra/p02_x2.jpg",
+      "ultra4": "ultra/p02_x4.jpg"
+    },
+    {
+      "file": "p03.webp",
+      "orig": "WhatsApp Image 2026-08-10 at 22.07.27(1).jpeg",
+      "idx": 3,
+      "ultra2": "ultra/p03_x2.jpg",
+      "ultra4": "ultra/p03_x4.jpg"
+    },
+    {
+      "file": "p04.webp",
+      "orig": "WhatsApp Image 2026-08-10 at 22.07.28 (1)(1).jpeg",
+      "idx": 4,
+      "ultra2": "ultra/p04_x2.jpg",
+      "ultra4": "ultra/p04_x4.jpg"
+    },
+    {
+      "file": "p05.webp",
+      "orig": "WhatsApp Image 2026-08-10 at 22.07.28 (2)(1).jpeg",
+      "idx": 5,
+      "ultra2": "ultra/p05_x2.jpg",
+      "ultra4": "ultra/p05_x4.jpg"
+    },
+    {
+      "file": "p06.webp",
+      "orig": "WhatsApp Image 2026-08-10 at 22.07.28(1).jpeg",
+      "idx": 6,
+      "ultra2": "ultra/p06_x2.jpg",
+      "ultra4": "ultra/p06_x4.jpg"
+    },
+    {
+      "file": "p07.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.19(1).jpeg",
+      "idx": 7,
+      "ultra2": "ultra/p07_x2.jpg",
+      "ultra4": "ultra/p07_x4.jpg"
+    },
+    {
+      "file": "p08.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.20.jpeg",
+      "idx": 8,
+      "ultra2": "ultra/p08_x2.jpg",
+      "ultra4": "ultra/p08_x4.jpg"
+    },
+    {
+      "file": "p09.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.21(1).jpeg",
+      "idx": 9,
+      "ultra2": "ultra/p09_x2.jpg",
+      "ultra4": "ultra/p09_x4.jpg"
+    },
+    {
+      "file": "p10.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.44 (1).jpeg",
+      "idx": 10,
+      "ultra2": "ultra/p10_x2.jpg",
+      "ultra4": "ultra/p10_x4.jpg"
+    },
+    {
+      "file": "p11.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.44.jpeg",
+      "idx": 11,
+      "ultra2": "ultra/p11_x2.jpg",
+      "ultra4": "ultra/p11_x4.jpg"
+    },
+    {
+      "file": "p12.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.45(1).jpeg",
+      "idx": 12,
+      "ultra2": "ultra/p12_x2.jpg",
+      "ultra4": "ultra/p12_x4.jpg"
+    },
+    {
+      "file": "p13.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.48(1).jpeg",
+      "idx": 13,
+      "ultra2": "ultra/p13_x2.jpg",
+      "ultra4": "ultra/p13_x4.jpg"
+    },
+    {
+      "file": "p14.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.49 (1)(1).jpeg",
+      "idx": 14,
+      "ultra2": "ultra/p14_x2.jpg",
+      "ultra4": "ultra/p14_x4.jpg"
+    },
+    {
+      "file": "p15.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.49(1).jpeg",
+      "idx": 15,
+      "ultra2": "ultra/p15_x2.jpg",
+      "ultra4": "ultra/p15_x4.jpg"
+    },
+    {
+      "file": "p16.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.50(1).jpeg",
+      "idx": 16,
+      "ultra2": "ultra/p16_x2.jpg",
+      "ultra4": "ultra/p16_x4.jpg"
+    },
+    {
+      "file": "p17.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.51 (2)(1).jpeg",
+      "idx": 17,
+      "ultra2": "ultra/p17_x2.jpg",
+      "ultra4": "ultra/p17_x4.jpg"
+    },
+    {
+      "file": "p18.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.51.jpeg",
+      "idx": 18,
+      "ultra2": "ultra/p18_x2.jpg",
+      "ultra4": "ultra/p18_x4.jpg"
+    },
+    {
+      "file": "p19.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.52 (2)(1).jpeg",
+      "idx": 19,
+      "ultra2": "ultra/p19_x2.jpg",
+      "ultra4": "ultra/p19_x4.jpg"
+    },
+    {
+      "file": "p20.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.52.jpeg",
+      "idx": 20,
+      "ultra2": "ultra/p20_x2.jpg",
+      "ultra4": "ultra/p20_x4.jpg"
+    },
+    {
+      "file": "p21.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.53(1).jpeg",
+      "idx": 21,
+      "ultra2": "ultra/p21_x2.jpg",
+      "ultra4": "ultra/p21_x4.jpg"
+    },
+    {
+      "file": "p22.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.54 (2)(1).jpeg",
+      "idx": 22,
+      "ultra2": "ultra/p22_x2.jpg",
+      "ultra4": "ultra/p22_x4.jpg"
+    },
+    {
+      "file": "p23.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.54(1).jpeg",
+      "idx": 23,
+      "ultra2": "ultra/p23_x2.jpg",
+      "ultra4": "ultra/p23_x4.jpg"
+    },
+    {
+      "file": "p24.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.55(1).jpeg",
+      "idx": 24,
+      "ultra2": "ultra/p24_x2.jpg",
+      "ultra4": "ultra/p24_x4.jpg"
+    },
+    {
+      "file": "p25.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.56 (1).jpeg",
+      "idx": 25,
+      "ultra2": "ultra/p25_x2.jpg",
+      "ultra4": "ultra/p25_x4.jpg"
+    },
+    {
+      "file": "p26.webp",
+      "orig": "WhatsApp Image 2026-08-23 at 00.27.56.jpeg",
+      "idx": 26,
+      "ultra2": "ultra/p26_x2.jpg",
+      "ultra4": "ultra/p26_x4.jpg"
+    }
+  ],
+  "videos": [
+    {
+      "file": "v01.mp4",
+      "poster": "v01.webp",
+      "orig": "WhatsApp Video 2026-08-10 at 22.07.27.mp4",
+      "idx": 1
+    },
+    {
+      "file": "v02.mp4",
+      "poster": "v02.webp",
+      "orig": "WhatsApp Video 2026-08-23 at 12.57.23.mp4",
+      "idx": 2
+    },
+    {
+      "file": "v03.mp4",
+      "poster": "v03.webp",
+      "orig": "WhatsApp Video 2026-08-23 at 12.59.09.mp4",
+      "idx": 3
+    },
+    {
+      "file": "v04.mp4",
+      "poster": "v04.webp",
+      "orig": "WhatsApp Video 2026-08-23 at 00.27.53.mp4",
+      "idx": 4
+    },
+    {
+      "file": "v05.mp4",
+      "poster": "v05.webp",
+      "orig": "WhatsApp Video 2026-08-23 at 00.27.55 (1).mp4",
+      "idx": 5
+    }
+  ],
+  "tracks": [
+    {
+      "title": "Haareya",
+      "file": "audio_1.mp3"
+    },
+    {
+      "title": "Humnava Mere",
+      "file": "audio_2.mp3"
+    },
+    {
+      "title": "Jaavedaan Hai",
+      "file": "audio_3.mp3"
+    },
+    {
+      "title": "Kangana Tera Ni",
+      "file": "audio_4.mp3"
+    }
+  ]
+}

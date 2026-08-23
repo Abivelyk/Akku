@@ -1,0 +1,18 @@
+AKKÚ UNIVERSE - FINAL STRICT AUDIT
+
+Build: Museum/Forever visibility + safe scroll repair
+
+HTML pages: 7
+Inline scripts checked with Node: 35
+Broken local references: 0
+Zero-byte media: 0
+Media files over 100 MB: 0
+Video 2: H.264 + AAC, 14.000 s
+Video 3: H.264 + AAC, 17.000 s
+Removed silent v06 and all v06 references
+Scroll system: safe transform-only reveal; no opacity hiding
+Fixed layers: stacked below main content
+Museum gallery: forced visible
+Forever panels/end card: forced visible
+JS syntax: PASS
+ZIP integrity: PASS

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200">
+<defs>
+ <radialGradient id="g"><stop stop-color="#fff4c8"/><stop offset=".18" stop-color="#ffb86b"/><stop offset=".42" stop-color="#ff79b6" stop-opacity=".32"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+ <filter id="b"><feGaussianBlur stdDeviation="18"/></filter>
+</defs>
+<rect width="1200" height="1200" fill="none"/>
+<g opacity=".8">
+ <circle cx="900" cy="220" r="170" fill="url(#g)" filter="url(#b)">
+   <animate attributeName="r" values="150;185;150" dur="6s" repeatCount="indefinite"/>
+   <animate attributeName="opacity" values=".55;.85;.55" dur="6s" repeatCount="indefinite"/>
+ </circle>
+ <circle cx="900" cy="220" r="42" fill="#ffe7b3"/>
+ <g fill="none" stroke="#b8d9ff" stroke-opacity=".22">
+  <circle cx="900" cy="220" r="85"/><circle cx="900" cy="220" r="140"/><circle cx="900" cy="220" r="210"/>
+ </g>
+ <g fill="#d8e7ff">
+  <circle cx="985" cy="220" r="5"><animateTransform attributeName="transform" type="rotate" from="0 900 220" to="360 900 220" dur="5s" repeatCount="indefinite"/></circle>
+  <circle cx="1040" cy="220" r="3"><animateTransform attributeName="transform" type="rotate" from="0 900 220" to="360 900 220" dur="9s" repeatCount="indefinite"/></circle>
+ </g>
+</g>
+</svg>
