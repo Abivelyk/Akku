@@ -294,3 +294,37 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();menuPa
     setTimeout(()=>el.classList.remove('is-pressed'),140);
   }, {passive:true});
 })();
+
+/* AKKU SINGLE-SONG MUSIC */
+(() => {
+  const init = () => {
+    if (document.querySelector("[data-akku-music]")) return;
+
+    const audio = document.createElement("audio");
+    audio.dataset.akkuMusic = "1";
+    audio.src = "assets/audio_3.mp3";
+    audio.preload = "metadata";
+    audio.loop = true;
+    audio.volume = 0.72;
+    audio.setAttribute("playsinline", "");
+    audio.setAttribute("aria-label", "Jaavedaan Hai");
+    audio.style.cssText =
+      "position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1";
+
+    document.body.appendChild(audio);
+
+    const tryPlay = () => audio.play().catch(() => {});
+
+    /* Browsers may block autoplay with sound until the first user gesture. */
+    tryPlay();
+    document.addEventListener("pointerdown", tryPlay, { once: true, passive: true });
+    document.addEventListener("touchstart", tryPlay, { once: true, passive: true });
+    document.addEventListener("keydown", tryPlay, { once: true, passive: true });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+  } else {
+    init();
+  }
+})();
