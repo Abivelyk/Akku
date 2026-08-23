@@ -1,18 +1,13 @@
-AKKÚ UNIVERSE - FINAL STRICT AUDIT
+AKKU FINAL LOW-MB PHONE BUILD
 
-Build: Museum/Forever visibility + safe scroll repair
-
-HTML pages: 7
-Inline scripts checked with Node: 35
-Broken local references: 0
-Zero-byte media: 0
-Media files over 100 MB: 0
-Video 2: H.264 + AAC, 14.000 s
-Video 3: H.264 + AAC, 17.000 s
-Removed silent v06 and all v06 references
-Scroll system: safe transform-only reveal; no opacity hiding
-Fixed layers: stacked below main content
-Museum gallery: forced visible
-Forever panels/end card: forced visible
-JS syntax: PASS
-ZIP integrity: PASS
+- 6 HTML rooms: home, memories, cinema, letter, museum, forever
+- Sound page removed
+- Only Jaavedaan Hai remains
+- Cinema contains videos 02 and 03 only
+- Heavy cosmic canvas/decor/scroll JS removed from pages
+- Mobile floating photos removed
+- Memory photos downscaled/recompressed for phone use
+- High-resolution ultra image set removed
+- Phone mode disables decorative animation and expensive blur
+- Jaavedaan preloads automatically and starts on first permitted interaction
+- LocalStorage preserves playback position across page changes

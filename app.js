@@ -76,7 +76,7 @@ if(film){const slides=$$('.film-slide',film),dots=$$('.film-dot',film),prev=$('[
 
 /* ===== photo modal + museum filter ===== */
 const modal=$('[data-photo-modal]'),modalImg=$('[data-modal-img]'),modalCap=$('[data-modal-caption]');
-function openModal(file,cap){if(!modal||!modalImg)return;const hi='assets/ultra/'+file.replace('.webp','_x2.jpg');const fallback='assets/'+file;modalImg.onerror=()=>{modalImg.onerror=null;modalImg.src=fallback;};modalImg.src=hi;modalImg.alt=cap||'Memory';if(modalCap)modalCap.textContent=cap||'';modal.classList.add('open');document.body.classList.add('modal-open');}
+function openModal(file,cap){if(!modal||!modalImg)return;modalImg.src='assets/'+file;modalImg.alt=cap||'Memory';if(modalCap)modalCap.textContent=cap||'';modal.classList.add('open');document.body.classList.add('modal-open');}
 function closeModal(){modal?.classList.remove('open');document.body.classList.remove('modal-open');}
 $$('.open-photo,.museum-card').forEach(b=>b.addEventListener('click',()=>openModal(b.dataset.photo||'',b.dataset.caption||('memory '+(b.dataset.photo||'').replace('p','').replace('.webp','')))));
 $('[data-modal-close]')?.addEventListener('click',closeModal);modal?.addEventListener('click',e=>{if(e.target===modal)closeModal();});
@@ -85,10 +85,7 @@ const museum=$('[data-museum]'); if(museum){$$('[data-filter]',museum).forEach(f
 /* ===== cinema ===== */
 const video=$('[data-main-video]');
 if(video){
-  video.addEventListener('play',()=>window.__akkuPauseForVideo?.(),{passive:true});
-  video.addEventListener('pause',()=>window.__akkuResumeAfterVideo?.(),{passive:true});
-  video.addEventListener('ended',()=>window.__akkuResumeAfterVideo?.(),{passive:true});
-  const sources=['v01.mp4','v02.mp4','v03.mp4','v04.mp4','v05.mp4'];
+  const sources=['v02.mp4','v03.mp4'];
   const titles=['motion / 01','motion / 02','motion / 03','motion / 04','motion / 05'];
   const thumbs=$$('[data-video-index]');
   const play=$('[data-v-play]'),mute=$('[data-v-mute]'),vol=$('[data-v-volume]'),seek=$('[data-v-seek]'),time=$('[data-v-time]'),title=$('[data-v-title]');
@@ -139,9 +136,14 @@ if(video){
   seek?.addEventListener('input',()=>{if(video.duration)video.currentTime=Number(seek.value)/100*video.duration;syncUI();});
   video.addEventListener('loadedmetadata',syncUI);
   video.addEventListener('timeupdate',syncUI);
-  video.addEventListener('play',syncUI);
-  video.addEventListener('pause',syncUI);
+  video.addEventListener('play',()=>{window.__akkuPauseForVideo?.();syncUI();});
+  video.addEventListener('pause',()=>{window.__akkuResumeAfterVideo?.();syncUI();});
+  video.addEventListener('play',()=>window.__akkuPauseForVideo?.());
+  video.addEventListener('pause',()=>window.__akkuResumeAfterVideo?.());
+  video.addEventListener('ended',()=>window.__akkuResumeAfterVideo?.());
   video.addEventListener('error',()=>toast('This video could not be loaded.'));
+  video.addEventListener('play',()=>{window.__akkuPauseForVideo?.(); video.dataset.akkuResumeMusic='1';});
+  video.addEventListener('ended',()=>{if(video.dataset.akkuResumeMusic==='1'){video.dataset.akkuResumeMusic='';window.__akkuResumeAfterVideo?.();}});
   $('[data-video-fullscreen]')?.addEventListener('click',()=>{const fn=video.requestFullscreen||video.webkitRequestFullscreen;if(fn)fn.call(video);});
 }
 
@@ -173,7 +175,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();menuPa
     const nodes=qa('[data-memory-node]',mu), read=q('[data-memory-readout]',mu), orbit=q('[data-memory-orbit]',mu), random=q('[data-memory-random]',mu);
     let selected=-1,drag=false,startX=0,rot=0;
     const renderRead=(i)=>{const b=nodes[i]; if(!b||!read)return; nodes.forEach(n=>n.classList.remove('selected'));b.classList.add('selected');selected=i; const title=b.dataset.caption||'memory'; read.innerHTML=`<span>MEMORY ${String(i+1).padStart(2,'0')}</span><b>${title}</b><small>Tap again to open the full frame.</small>`;};
-    nodes.forEach((b,i)=>b.addEventListener('click',()=>{renderRead(i); setTimeout(()=>{const m=document.querySelector('[data-photo-modal]');const img=document.querySelector('[data-modal-img]');const cap=document.querySelector('[data-modal-caption]');if(m&&img){img.src='assets/ultra/'+b.dataset.photo.replace('.webp','_x2.jpg');if(cap)cap.textContent=b.dataset.caption||'';m.classList.add('open');document.body.classList.add('modal-open');}},160)}));
+    nodes.forEach((b,i)=>b.addEventListener('click',()=>{renderRead(i); setTimeout(()=>{const m=document.querySelector('[data-photo-modal]');const img=document.querySelector('[data-modal-img]');const cap=document.querySelector('[data-modal-caption]');if(m&&img){img.src='assets/'+b.dataset.photo;if(cap)cap.textContent=b.dataset.caption||'';m.classList.add('open');document.body.classList.add('modal-open');}},160)}));
     random?.addEventListener('click',()=>{let i=Math.floor(Math.random()*nodes.length);renderRead(i);miniBurst(innerWidth/2,innerHeight*.58)});
     if(orbit){
       const down=e=>{drag=true;startX=e.clientX||e.touches?.[0]?.clientX||0;orbit.classList.add('dragging')};
@@ -196,6 +198,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();menuPa
 (()=>{
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const fine = matchMedia("(pointer:fine)").matches;
+  const coarse = matchMedia("(pointer:coarse)").matches || 'ontouchstart' in window;
+  const touch = matchMedia("(pointer:coarse)").matches || 'ontouchstart' in window;
   function spawn(x,y){
     if(reduced || !fine) return;
     const r=document.createElement("span");
@@ -222,7 +226,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();menuPa
     if(e.button!==undefined && e.button!==0) return;
     spawn(e.clientX,e.clientY);
     const el=e.target.closest("button,a,.memory-card,.film-card,.track,.filter");
-    if(el){
+    if(el && !touch){
       el.animate(
         [{transform:"scale(.97)"},{transform:"scale(1)"}],
         {duration:180,easing:"cubic-bezier(.2,.8,.2,1)"}
@@ -272,7 +276,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();menuPa
   // Friendly focus/press feedback for keyboard and touch alike.
   document.addEventListener('pointerdown', e=>{
     const el=e.target.closest('button,a,.room-card,.museum-card,.film-slide,.track,.filter');
-    if(!el) return;
+    if(!el || coarse) return;
     el.classList.add('is-pressed');
     setTimeout(()=>el.classList.remove('is-pressed'),140);
   }, {passive:true});
@@ -281,46 +285,68 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();menuPa
 
 /* ===== AKKU SINGLE-SONG MUSIC: persistent Jaavedaan Hai ===== */
 (()=>{
-  const KEY='akku.music.state.v5';
+  const KEY='akku.music.v3';
   const read=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch{return null}};
-  const write=v=>{try{localStorage.setItem(KEY,JSON.stringify(v))}catch{}};
+  const write=s=>{try{localStorage.setItem(KEY,JSON.stringify(s))}catch{}};
   const init=()=>{
-    if(document.querySelector('[data-akku-music]'))return;
+    if(document.querySelector('[data-akku-music]')) return;
     const prev=read();
     const audio=document.createElement('audio');
     audio.dataset.akkuMusic='1';
     audio.src='assets/audio_3.mp3';
     audio.preload='auto';
-    audio.autoplay=true;
     audio.loop=true;
     audio.volume=.72;
     audio.setAttribute('playsinline','');
     audio.setAttribute('aria-label','Jaavedaan Hai');
     audio.style.cssText='position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1';
     document.body.appendChild(audio);
-    let wasPlaying=!!prev?.playing;
+
+    let resumeAfterVideo=false;
+    let restored=false;
     const save=()=>write({time:Number.isFinite(audio.currentTime)?audio.currentTime:0,playing:!audio.paused&&!audio.ended});
-    const restore=()=>{
+    const restoreAndMaybePlay=()=>{
+      if(restored)return;
+      restored=true;
+      const wasPlaying=!!prev?.playing;
       if(prev&&Number.isFinite(prev.time)){
-        try{audio.currentTime=Math.max(0,prev.time)}catch{}
+        try{ audio.currentTime=Math.max(0,prev.time); }catch{}
       }
-      if(wasPlaying)audio.play().catch(()=>{});
+      if(wasPlaying){ audio.play().catch(()=>{}); }
     };
-    const tryResume=()=>{if(wasPlaying)audio.play().catch(()=>{});save();};
-    audio.addEventListener('loadedmetadata',restore,{once:true});
-    audio.addEventListener('timeupdate',save,{passive:true});
-    audio.addEventListener('play',save,{passive:true});
+
+    window.__akkuMusic=audio;
+    window.__akkuSaveMusic=save;
+    window.__akkuPauseForVideo=()=>{
+      resumeAfterVideo=!audio.paused;
+      save();
+      audio.pause();
+      return resumeAfterVideo;
+    };
+    window.__akkuResumeAfterVideo=()=>{
+      if(!resumeAfterVideo)return;
+      resumeAfterVideo=false;
+      audio.play().then(save).catch(()=>{});
+    };
+
+    audio.addEventListener('loadedmetadata',restoreAndMaybePlay,{once:true});
+    let lastSave=0; audio.addEventListener('timeupdate',()=>{const now=Date.now();if(now-lastSave>1200){lastSave=now;save();}},{passive:true});
     audio.addEventListener('pause',save,{passive:true});
-    audio.addEventListener('ended',()=>{audio.currentTime=0;tryResume()},{passive:true});
+    audio.addEventListener('play',save,{passive:true});
     addEventListener('pagehide',save,{passive:true});
     addEventListener('beforeunload',save,{passive:true});
     document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')save()},{passive:true});
-    document.addEventListener('pointerdown',tryResume,{once:true,passive:true});
-    document.addEventListener('touchstart',tryResume,{once:true,passive:true});
-    document.addEventListener('keydown',tryResume,{once:true,passive:true});
-    window.__akkuMusic=audio;
-    window.__akkuPauseForVideo=()=>{const resume=!audio.paused;wasPlaying=resume;save();audio.pause();return resume};
-    window.__akkuResumeAfterVideo=()=>{if(wasPlaying)audio.play().catch(()=>{})};
+
+    // Browsers can block audible autoplay. Resume on the first allowed gesture.
+    const gesture=()=>{
+      if(prev?.playing) audio.play().catch(()=>{});
+      save();
+    };
+    document.addEventListener('pointerdown',gesture,{once:true,passive:true});
+    document.addEventListener('touchstart',gesture,{once:true,passive:true});
+    document.addEventListener('keydown',gesture,{once:true,passive:true});
+    document.querySelectorAll('a[href$=\".html\"],a[href$=\".html#\"] , .room-card, .btn, .nav-menu').forEach(el=>el.addEventListener('click',()=>{ audio.play().catch(()=>{}); },{passive:true}));
   };
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
+  else init();
 })();
