@@ -185,7 +185,10 @@
     document.getElementById('mobileNav').classList.remove('open');
     if(push){history.pushState({room},'',`#${room}`);}else if(location.hash.slice(1)!==room){history.replaceState({room},'',`#${room}`)}
     window.scrollTo({top:0,behavior:'auto'});
-    if(room==='cinema') setTimeout(()=>document.getElementById('video')?.focus({preventScroll:true}),120);
+    if(room==='cinema'){
+      if(!video.getAttribute('src')) loadVideo(0,false);
+      setTimeout(()=>document.getElementById('video')?.focus({preventScroll:true}),120);
+    }
   }
 
   document.addEventListener('click',e=>{
@@ -239,7 +242,7 @@
   video.addEventListener('pause',()=>{vPlay.textContent='Play'});
   video.addEventListener('ended',()=>{if(resumeMusicAfterVideo){resumeMusicAfterVideo=false;playMusic();}});
   vFull.addEventListener('click',()=>{const f=video.requestFullscreen||video.webkitRequestFullscreen;if(f)f.call(video)});
-  loadVideo(0,false);
+  // Intentionally defer video network/loading until Cinema is actually opened.
 
   let lightIndex=0;
   const lb=document.getElementById('lightbox'); const lbImg=document.getElementById('lightboxImg');
@@ -283,5 +286,23 @@
     const map={'1':'home','2':'memories','3':'cinema','4':'letter','5':'museum','6':'forever'};
     if(map[e.key]){e.preventDefault();route(map[e.key]);}
   });
+  // Compact mobile room rail: one transform/opacity layer, no animation loop.
+  const rail=document.getElementById('mobileRail');
+  if(rail){
+    const prev=rail.querySelector('[data-rail-prev]');
+    const next=rail.querySelector('[data-rail-next]');
+    const label=rail.querySelector('[data-rail-label]');
+    const syncRail=()=>{
+      const idx=roomOrder.indexOf(activeRoom);
+      const p=roomOrder[(idx-1+roomOrder.length)%roomOrder.length];
+      const n=roomOrder[(idx+1)%roomOrder.length];
+      prev.dataset.railPrev=p; next.dataset.railNext=n; label.textContent=roomLabels[activeRoom].toUpperCase();
+    };
+    prev?.addEventListener('click',()=>route(prev.dataset.railPrev));
+    next?.addEventListener('click',()=>route(next.dataset.railNext));
+    const originalRoute=route;
+    route=(...args)=>{originalRoute(...args);requestAnimationFrame(syncRail)};
+    syncRail();
+  }
   route(location.hash.slice(1)||'home',false);
 })();
