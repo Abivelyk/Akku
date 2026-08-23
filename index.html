@@ -1,9 +1,5 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#05050a"><meta name="description" content="A cinematic memory universe built for Akshita."><link rel="stylesheet" href="styles.css"><link rel="manifest" href="manifest.json"><meta name="color-scheme" content="dark"><title>AKKÚ · The Universe</title>
-
-
-
-
-
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/><meta content="#05050a" name="theme-color"/><meta content="A cinematic memory universe built for Akshita." name="description"/><link href="styles.css" rel="stylesheet"/><link href="manifest.json" rel="manifest"/><meta content="dark" name="color-scheme"/><title>AKKÚ · The Universe</title>
 <style id="entry-critical-fix">
 body.entry-lock{overflow:hidden}
 body.entry-lock .entry{opacity:1!important;visibility:visible!important;pointer-events:auto!important}
@@ -13,7 +9,6 @@ body.entry-lock .entry{opacity:1!important;visibility:visible!important;pointer-
 .entry-core *{opacity:1!important;visibility:visible!important}
 .entry-glyph,.entry-title,.entry-copy,.entry-hint,.entry-core .btn,.entry-core .mini-label{visibility:visible!important}
 </style>
-
 <style id="akk-decorations">
 :root{
   --akk-pink: rgba(255,164,214,.72);
@@ -97,8 +92,6 @@ body{position:relative;isolation:isolate}
  .akk-ambient::before,.akk-ambient::after,.akk-deco .spark,{animation:none!important}
 }
 </style>
-
-
 <style id="akk-galaxy-background">
 .akk-cosmos{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .akk-cosmos canvas{width:100%;height:100%;display:block;opacity:.9}
@@ -133,7 +126,6 @@ main,.screen,.page,.room,.museum-wrap,.letter-wrap,.cinema-wrap,.sound-wrap,.mem
   body::after{opacity:.92}
 }
 </style>
-
 <style id="akk-late-room-brightness">
 /* Later-room readability: lift surfaces without washing out the night-sky aesthetic. */
 .museum-wrap, .letter-wrap, .cinema-wrap, .sound-wrap, .memory-wrap{
@@ -143,7 +135,6 @@ main,.screen,.page,.room,.museum-wrap,.letter-wrap,.cinema-wrap,.sound-wrap,.mem
   box-shadow:0 18px 70px rgba(0,0,0,.18),inset 0 1px rgba(255,255,255,.055);
 }
 </style>
-
 <style id="akk-rich-decor">
 .akk-rich-layer{
  position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden;mix-blend-mode:normal;opacity:.12;
@@ -178,7 +169,6 @@ main,.screen,.page,.room,.museum-wrap,.letter-wrap,.cinema-wrap,.sound-wrap,.mem
 @media(max-width:700px){.akk-rich-layer{opacity:.14}.akk-rich-layer img{width:190px;top:5vh;right:-55px;opacity:.18}}
 @media(prefers-reduced-motion:reduce){.akk-rich-layer *{animation:none!important}}
 </style>
-
 <style id="akk-scroll-tech">
 html{scroll-behavior:smooth}
 body{--akk-scroll-p:0}
@@ -205,21 +195,19 @@ main,.topbar,footer{position:relative;z-index:8}
 .akk-rich-layer,.akk-cosmos,.akk-ambient,.akk-deco,.akk-glowline{z-index:1!important}
 /* These rooms should never become visually empty due to a missed animation callback. */
 .museum-wrap,.museum-next,.museum-top-next,.forever-panel,.end-card{opacity:1!important;visibility:visible!important}
-</style><link rel="stylesheet" href="mobile-lite.css">
-</head><body class="entry-lock"><div class="entry" data-entry><canvas class="entry-canvas" data-entry-canvas></canvas><div class="entry-core"><div class="entry-glyph">✦</div><div class="mini-label">a private little universe</div><h1 class="entry-title">For <em>Akshita</em>.</h1><p class="entry-copy">A small world made from real photographs, real sounds, moving memories, and all the little things I never wanted to let disappear.</p><button class="btn rose" data-enter>Step inside ↗</button><div class="entry-hint">tap anywhere · let the butterflies begin</div></div></div>
-<nav class="topbar"><a class="brand" href="index.html"><span class="brand-dot"></span>AKKÚ <i>/</i> UNIVERSE</a><div class="nav-links"><a class="active" href="index.html">Home</a><a href="memories.html">Memories</a><a href="cinema.html">Cinema</a><a href="letter.html">Letter</a><a href="museum.html">Museum</a><a href="soundtrack.html">Sound</a><a href="forever.html">Forever</a></div><button class="nav-menu" data-menu aria-label="Open menu">☰</button></nav>
-<div class="mobile-menu" data-menu-panel><div class="mobile-menu-inner"><div class="mini-label">THE ROOMS</div><a href="index.html">00 · Home</a><a href="memories.html">01 · Memories</a><a href="cinema.html">02 · Cinema</a><a href="letter.html">03 · Letter</a><a href="museum.html">04 · Museum</a><a href="soundtrack.html">05 · Soundtrack</a><a href="forever.html">06 · Forever</a></div></div>
-<div class="cursor"></div><div class="lumen"></div><div class="page-wipe" data-page-wipe><span>opening the next room</span></div><div class="toast" data-toast></div><div class="progress"><span data-progress></span></div>
-<div class="sound-dock"><button data-sound-open><span class="eq-bars"><i></i><i></i><i></i><i></i></span><b>sound</b></button></div><div class="sound-panel" data-sound-panel><button class="panel-close" data-sound-close>×</button><div class="mini-label">AUDIO</div><h3>Let the room breathe.</h3><p>Nothing auto-plays until you choose it. The site is designed around deliberate taps, especially on phones.</p><div class="sound-actions"><button class="pill" data-global-mute>Mute all</button><a class="pill solid" href="soundtrack.html">Open soundtrack</a></div></div>
+</style><link rel="stylesheet" href="guide.css">
+<link rel="stylesheet" href="lowend-phone.css">
+</head><body class="entry-lock"><div class="entry" data-entry=""><canvas class="entry-canvas" data-entry-canvas=""></canvas><div class="entry-core"><div class="entry-glyph">✦</div><div class="mini-label">a private little universe</div><h1 class="entry-title">For <em>Akshita</em>.</h1><p class="entry-copy">A small world made from real photographs, real sounds, moving memories, and all the little things I never wanted to let disappear.</p><button class="btn rose" data-enter="">Step inside ↗</button><div class="entry-hint">tap anywhere · let the butterflies begin</div></div></div>
+<nav class="topbar"><a class="brand" href="index.html"><span class="brand-dot"></span>AKKÚ <i>/</i> UNIVERSE</a><div class="nav-links"><a class="active" href="index.html">Home</a><a href="memories.html">Memories</a><a href="cinema.html">Cinema</a><a href="letter.html">Letter</a><a href="museum.html">Museum</a><a href="forever.html">Forever</a></div><button aria-label="Open menu" class="nav-menu" data-menu="">☰</button></nav>
+<div class="mobile-menu" data-menu-panel=""><div class="mobile-menu-inner"><div class="mini-label">THE ROOMS</div><a href="index.html">00 · Home</a><a href="memories.html">01 · Memories</a><a href="cinema.html">02 · Cinema</a><a href="letter.html">03 · Letter</a><a href="museum.html">04 · Museum</a><a href="forever.html">05 · Forever</a></div></div>
+<div class="cursor"></div><div class="lumen"></div><div class="page-wipe" data-page-wipe=""><span>opening the next room</span></div><div class="toast" data-toast=""></div><div class="progress"><span data-progress=""></span></div>
+<h3>Let the room breathe.</h3><p>Nothing auto-plays until you choose it. The site is designed around deliberate taps, especially on phones.</p><div class="sound-actions"><button class="pill" data-global-mute="">Mute all</button></div>
 <main>
-<section class="page hero"><canvas class="hero-space" data-space></canvas><div class="wrap hero-inner"><div class="reveal"><div class="eyebrow">00 · the beginning</div><h1 class="display hero-title">For <em>Akshita</em>,<br>and the moments<br>that refuse to fade.</h1><p class="hero-copy">I wanted something that felt less like a webpage and more like a place. So here it is: rooms for the photographs, the videos, the songs, the words, and the quiet part at the end.</p><div class="cta-row"><a class="btn rose" href="memories.html">Enter the memories ↗</a><a class="btn" href="letter.html">Open the letter</a></div><div class="hero-stats"><div class="stat"><strong>26</strong><span>photographs</span></div><div class="stat"><strong>06</strong><span>moving memories</span></div><div class="stat"><strong>04</strong><span>songs</span></div><div class="stat"><strong>∞</strong><span>ways to remember</span></div></div></div><div class="hero-stage"><div class="orbit-ring"></div><div class="orbit-ring r2"></div><div class="orbit-ring r3"></div><div class="hero-core tilt"><img src="assets/p11.webp" alt="portrait"><div class="hero-tag">the one I kept looking at</div></div><div class="orbit-photo"><img src="assets/p03.webp" alt="memory"></div><div class="orbit-photo"><img src="assets/p20.webp" alt="memory"></div><div class="orbit-photo"><img src="assets/p24.webp" alt="memory"></div><div class="orbit-photo"><img src="assets/p08.webp" alt="memory"></div></div></div></section>
-<section class="page" id="rooms"><div class="wrap"><div class="section-head reveal"><div><div class="mini-label">THE ROOMS</div><h2 class="display">Choose a door.<br>Stay awhile.</h2></div><p class="section-intro">Every room has its own rhythm. There is no rush. The whole point is to make the transitions feel like tiny discoveries.</p></div><div class="rooms"><a class="room-card tilt reveal" href="memories.html"><img src="assets/p15.webp" alt="Memories"><span class="room-arrow">↗</span><div><div class="room-no">01 · ARCHIVE</div><h3>Memories</h3><p>Swipe through photographs like film stills. Tap one to step inside it.</p></div></a><a class="room-card tilt reveal" href="cinema.html"><img src="assets/p09.webp" alt="Cinema"><span class="room-arrow">↗</span><div><div class="room-no">02 · MOTION</div><h3>Cinema</h3><p>Six moving fragments with explicit audio and mobile-safe controls.</p></div></a><a class="room-card tilt reveal" href="letter.html"><img src="assets/p21.webp" alt="Letter"><span class="room-arrow">↗</span><div><div class="room-no">03 · WORDS</div><h3>Letter</h3><p>A constellation opens into a message instead of a normal envelope.</p></div></a><a class="room-card tilt reveal" href="museum.html"><img src="assets/p04.webp" alt="Museum"><span class="room-arrow">↗</span><div><div class="room-no">04 · CURATION</div><h3>Museum</h3><p>A living wall for the pictures that deserve their own room.</p></div></a><a class="room-card tilt reveal" href="soundtrack.html"><img src="assets/p25.webp" alt="Soundtrack"><span class="room-arrow">↗</span><div><div class="room-no">05 · SOUND</div><h3>Soundtrack</h3><p>Four moods. One record room. Press play and let the page move.</p></div></a><a class="room-card tilt reveal" href="forever.html"><img src="assets/p10.webp" alt="Forever"><span class="room-arrow">↗</span><div><div class="room-no">06 · LAST LIGHT</div><h3>Forever</h3><p>The long ending. More words, more silence, and a place to come back to.</p></div></a></div></div></section>
+<section class="page hero"><canvas class="hero-space" data-space=""></canvas><div class="wrap hero-inner"><div class="reveal"><div class="eyebrow">00 · the beginning</div><h1 class="display hero-title">For <em>Akshita</em>,<br/>and the moments<br/>that refuse to fade.</h1><p class="hero-copy">I wanted something that felt less like a webpage and more like a place. So here it is: rooms for the photographs, the videos, the songs, the words, and the quiet part at the end.</p><div class="cta-row"><a class="btn rose" href="memories.html">Enter the memories ↗</a><a class="btn" href="letter.html">Open the letter</a></div><div class="hero-stats"><div class="stat"><strong>26</strong><span>photographs</span></div><div class="stat"><strong>06</strong><span>moving memories</span></div><div class="stat"><strong>04</strong><span>songs</span></div><div class="stat"><strong>∞</strong><span>ways to remember</span></div></div></div><div class="hero-stage"><div class="orbit-ring"></div><div class="orbit-ring r2"></div><div class="orbit-ring r3"></div><div class="hero-core tilt"><img alt="portrait" src="assets/p11.webp"/><div class="hero-tag">the one I kept looking at</div></div><div class="orbit-photo"><img alt="memory" src="assets/p03.webp"/></div><div class="orbit-photo"><img alt="memory" src="assets/p20.webp"/></div><div class="orbit-photo"><img alt="memory" src="assets/p24.webp"/></div><div class="orbit-photo"><img alt="memory" src="assets/p08.webp"/></div></div></div></section>
+<section class="page" id="rooms"><div class="wrap"><div class="section-head reveal"><div><div class="mini-label">THE ROOMS</div><h2 class="display">Choose a door.<br/>Stay awhile.</h2></div><p class="section-intro">Every room has its own rhythm. There is no rush. The whole point is to make the transitions feel like tiny discoveries.</p></div><div class="rooms"><a class="room-card tilt reveal" href="memories.html"><img alt="Memories" src="assets/p15.webp"/><span class="room-arrow">↗</span><div><div class="room-no">01 · ARCHIVE</div><h3>Memories</h3><p>Swipe through photographs like film stills. Tap one to step inside it.</p></div></a><a class="room-card tilt reveal" href="cinema.html"><img alt="Cinema" src="assets/p09.webp"/><span class="room-arrow">↗</span><div><div class="room-no">02 · MOTION</div><h3>Cinema</h3><p>Six moving fragments with explicit audio and mobile-safe controls.</p></div></a><a class="room-card tilt reveal" href="letter.html"><img alt="Letter" src="assets/p21.webp"/><span class="room-arrow">↗</span><div><div class="room-no">03 · WORDS</div><h3>Letter</h3><p>A constellation opens into a message instead of a normal envelope.</p></div></a><a class="room-card tilt reveal" href="museum.html"><img alt="Museum" src="assets/p04.webp"/><span class="room-arrow">↗</span><div><div class="room-no">04 · CURATION</div><h3>Museum</h3><p>A living wall for the pictures that deserve their own room.</p></div></a><a class="room-card tilt reveal" href="forever.html"><img alt="Forever" src="assets/p10.webp"/><span class="room-arrow">↗</span><div><div class="room-no">05 · LAST LIGHT</div><h3>Forever</h3><p>The long ending. More words, more silence, and a place to come back to.</p></div></a></div></div></section>
 <section class="page pull-quote"><div class="wrap reveal"><blockquote>“I wanted to make a place where even silence would still feel like you.”</blockquote><cite>for the person this whole universe keeps pointing back to</cite></div></section>
 </main><footer class="footer"><div>AKKÚ / UNIVERSE</div><div class="footer-right">start anywhere · leave slowly</div></footer>
 <script src="app.js"></script>
-
-
-
 <script id="akk-decorations-js">
 (()=>{"use strict";
 const reduce=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
@@ -249,8 +237,6 @@ if(!reduce){
 }
 })();
 </script>
-
-
 <script id="akk-galaxy-background-js">
 (()=>{"use strict";const reduce=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;if(reduce)return;
 const wrap=document.createElement("div");wrap.className="akk-cosmos";wrap.innerHTML='<canvas aria-hidden="true"></canvas><div class="galaxy-haze"></div><div class="cosmic-vignette"></div><div class="cosmic-hud"><span class="dot"></span><span>deep space // quiet orbit</span></div>';document.body.prepend(wrap);
@@ -277,7 +263,6 @@ document.body.prepend(wrap);
 if(reduce) wrap.style.opacity=".08";
 })();
 </script>
-
 <script id="akk-scroll-tech-js">
 (()=>{"use strict";
 const reduce=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
@@ -295,4 +280,34 @@ addEventListener("scroll",()=>{if(!raf)raf=requestAnimationFrame(tick)},{passive
 if(!reduce){const pars=[...document.querySelectorAll(".room-hero,.forever-hero")].slice(0,6);let pr=0;const onP=()=>{pars.forEach((el,i)=>{const r=el.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;const k=(i%2+1)*.018;el.style.setProperty("--akk-px",((innerHeight/2-(r.top+r.height/2))*k).toFixed(1)+"px")})};addEventListener("scroll",()=>{if(!pr)pr=requestAnimationFrame(()=>{pr=0;onP()})},{passive:true});onP();}
 })();
 </script>
+
+<div class="akku-guide" data-start-guide aria-modal="true" role="dialog">
+  <div class="akku-guide-backdrop"></div>
+  <div class="akku-guide-film">
+    <div class="akku-guide-kicker">BEFORE YOU ENTER</div>
+    <div class="akku-guide-scene is-active" data-guide-scene="0">
+      <div class="guide-orb headphones">⌁</div>
+      <div class="guide-number">01</div>
+      <h2>Use headphones.</h2>
+      <p>This universe has a soundtrack. Put your headphones on, turn the volume up a little, and let the rooms breathe.</p>
+    </div>
+    <div class="akku-guide-scene" data-guide-scene="1">
+      <div class="guide-orb pages">✦</div>
+      <div class="guide-number">02</div>
+      <h2>Read everything.</h2>
+      <p>Do not rush the scroll. Every room has little notes, details and things meant to be found slowly.</p>
+    </div>
+    <div class="akku-guide-scene" data-guide-scene="2">
+      <div class="guide-orb cinema">◌</div>
+      <div class="guide-number">03</div>
+      <h2>Watch carefully.</h2>
+      <p>When you reach Cinema, watch the little moments all the way through. Then open the next room.</p>
+    </div>
+    <div class="akku-guide-foot">
+      <div class="guide-dots"><button data-guide-dot="0" class="active" aria-label="Guide step 1"></button><button data-guide-dot="1" aria-label="Guide step 2"></button><button data-guide-dot="2" aria-label="Guide step 3"></button></div>
+      <div class="guide-actions"><button class="guide-next" data-guide-next>Next</button><button class="guide-enter" data-guide-enter>Enter the universe ↗</button></div>
+    </div>
+  </div>
+</div>
+<script src="guide.js" defer></script>
 </body></html>

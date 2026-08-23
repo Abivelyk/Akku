@@ -266,3 +266,30 @@ button,a{touch-action:manipulation}
   body:before{animation:none!important}
   .touch-ripple,.touch-spark,.mini-heart{display:none!important}
 }
+
+
+/* ===== PHONE PERFORMANCE MODE ===== */
+@media (pointer:coarse), (max-width:760px){
+  html{overflow-x:hidden!important;scroll-behavior:auto!important;-webkit-text-size-adjust:100%}
+  body{width:100%!important;max-width:100%!important;overflow-x:hidden!important;overscroll-behavior-x:none!important}
+  .ambient-canvas,.entry-canvas,[data-space],.akk-cosmos,.akk-rich-layer,.akk-deco,.akk-glowline,
+  .akk-velocity-glow,.akk-swipe-cue,.lumen,.cursor{display:none!important;animation:none!important}
+  .orbit-ring,.orbit-photo,.hero-stage,.hero-core,.halo,.forever-hero .halo,
+  .record-aura,.letter-orbit,.memory-orbit::after,.memory-orbit-core{animation:none!important}
+  .topbar,.mobile-menu,.mobile-menu-inner,.toast,.glass,.panel,.room-card,.museum-card,.video-frame,
+  .sound-panel{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .room-card:hover img,.museum-card:hover img,.video-thumb:hover img,.forever-panel .card:hover img,
+  .letter-photo:hover img{transform:none!important}
+  .btn::after,.room-card::before,.museum-card::before,.video-thumb::before,.track::before,
+  .track::after{display:none!important;animation:none!important}
+  .reveal,.reveal-scale{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
+  img,video,canvas,svg{max-width:100%!important}
+  video{height:auto!important}
+  .topbar{left:10px!important;right:10px!important;width:auto!important;transform:none!important}
+  .nav-menu{display:grid!important;place-items:center!important;min-width:44px!important;min-height:44px!important}
+  .mobile-menu{max-width:100vw!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch}
+  .mobile-menu-inner{width:min(92vw,460px)!important;max-height:calc(100dvh - 28px)!important;overflow-y:auto!important}
+  .hero,.forever-hero,.letter-room,.soundtrack{min-height:100dvh!important}
+  .film-slide{transition:none!important}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}

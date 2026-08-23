@@ -1,4 +1,5 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#05050a"><link rel="stylesheet" href="styles.css"><link rel="manifest" href="manifest.json"><meta name="color-scheme" content="dark"><title>Museum · AKKÚ</title>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/><meta content="#05050a" name="theme-color"/><link href="styles.css" rel="stylesheet"/><link href="manifest.json" rel="manifest"/><meta content="dark" name="color-scheme"/><title>Museum · AKKÚ</title>
 <style id="MUSEUM-NEXT-11">
 .museum-next{
   max-width:980px;margin:0 auto;padding:18px;
@@ -31,7 +32,6 @@
   .museum-next-actions a,.museum-next-actions button{flex:1 1 100%}
 }
 </style>
-
 <style id="MUSEUM-TOP-NEXT">
 .museum-top-next{max-width:980px;margin:0 auto;padding:4px 18px 6px}
 .museum-top-next .museum-next-card{
@@ -61,12 +61,6 @@
   .museum-top-next .actions a{flex:1 1 100%}
 }
 </style>
-
-
-
-
-
-
 <style id="safe-page-transition">
 body.safe-page-enter{animation:safeIn .45s cubic-bezier(.16,1,.3,1) both}
 body.safe-page-exit{animation:safeOut .18s ease both;pointer-events:none}
@@ -157,8 +151,6 @@ body{position:relative;isolation:isolate}
  .akk-ambient::before,.akk-ambient::after,.akk-deco .spark,{animation:none!important}
 }
 </style>
-
-
 <style id="akk-galaxy-background">
 .akk-cosmos{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .akk-cosmos canvas{width:100%;height:100%;display:block;opacity:.9}
@@ -193,7 +185,6 @@ main,.screen,.page,.room,.museum-wrap,.letter-wrap,.cinema-wrap,.sound-wrap,.mem
   body::after{opacity:.92}
 }
 </style>
-
 <style id="akk-late-room-brightness">
 /* Later-room readability: lift surfaces without washing out the night-sky aesthetic. */
 .museum-wrap, .letter-wrap, .cinema-wrap, .sound-wrap, .memory-wrap{
@@ -203,7 +194,6 @@ main,.screen,.page,.room,.museum-wrap,.letter-wrap,.cinema-wrap,.sound-wrap,.mem
   box-shadow:0 18px 70px rgba(0,0,0,.18),inset 0 1px rgba(255,255,255,.055);
 }
 </style>
-
 <style id="akk-rich-decor">
 .akk-rich-layer{
  position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden;mix-blend-mode:normal;opacity:.12;
@@ -238,7 +228,6 @@ main,.screen,.page,.room,.museum-wrap,.letter-wrap,.cinema-wrap,.sound-wrap,.mem
 @media(max-width:700px){.akk-rich-layer{opacity:.14}.akk-rich-layer img{width:190px;top:5vh;right:-55px;opacity:.18}}
 @media(prefers-reduced-motion:reduce){.akk-rich-layer *{animation:none!important}}
 </style>
-
 <style id="akk-scroll-tech">
 html{scroll-behavior:smooth}
 body{--akk-scroll-p:0}
@@ -265,44 +254,39 @@ main,.topbar,footer{position:relative;z-index:8}
 .akk-rich-layer,.akk-cosmos,.akk-ambient,.akk-deco,.akk-glowline{z-index:1!important}
 /* These rooms should never become visually empty due to a missed animation callback. */
 .museum-wrap,.museum-next,.museum-top-next,.forever-panel,.end-card{opacity:1!important;visibility:visible!important}
-</style><link rel="stylesheet" href="mobile-lite.css">
-</head><body><nav class="topbar"><a class="brand" href="index.html"><span class="brand-dot"></span>AKKÚ <i>/</i> UNIVERSE</a><div class="nav-links"><a href="index.html">Home</a><a href="memories.html">Memories</a><a href="cinema.html">Cinema</a><a href="letter.html">Letter</a><a class="active" href="museum.html">Museum</a><a href="soundtrack.html">Sound</a><a href="forever.html">Forever</a></div><button class="nav-menu" data-menu>☰</button></nav><div class="mobile-menu" data-menu-panel><div class="mobile-menu-inner"><div class="mini-label">THE ROOMS</div><a href="index.html">00 · Home</a><a href="memories.html">01 · Memories</a><a href="cinema.html">02 · Cinema</a><a href="letter.html">03 · Letter</a><a href="museum.html">04 · Museum</a><a href="soundtrack.html">05 · Soundtrack</a><a href="forever.html">06 · Forever</a></div></div><div class="cursor"></div><div class="lumen"></div><div class="page-wipe" data-page-wipe><span>opening the next room</span></div><div class="toast" data-toast></div><div class="progress"><span data-progress></span></div>
-<main><section class="room-hero"><div class="wrap"><div class="eyebrow reveal">04 · curation</div><h1 class="display reveal">A wall<br>for her.</h1><p class="reveal">Twenty-six frames. Some polished, some imperfect, all real. Tap any piece to open the full-resolution version.</p></div></section>
-<section class="museum-top-next ultra-reveal" id="MUSEUM-TOP-NEXT" aria-label="Next room">
-  <div class="museum-next-card">
-    <div>
-      <div class="kicker">maybe the last room is waiting</div>
-      <h3>There is one last room.</h3>
-      <p>You can open Forever now, or simply keep scrolling through the frames first.</p>
-    </div>
-    <div class="actions">
-      <a class="primary" href="forever.html">Open Forever →</a>
-      <a href="#museum-gallery">Keep Scrolling ↓</a>
-    </div>
-  </div>
+</style><link rel="stylesheet" href="lowend-phone.css">
+</head><body><nav class="topbar"><a class="brand" href="index.html"><span class="brand-dot"></span>AKKÚ <i>/</i> UNIVERSE</a><div class="nav-links"><a href="index.html">Home</a><a href="memories.html">Memories</a><a href="cinema.html">Cinema</a><a href="letter.html">Letter</a><a class="active" href="museum.html">Museum</a><a href="forever.html">Forever</a></div><button class="nav-menu" data-menu="">☰</button></nav><div class="mobile-menu" data-menu-panel=""><div class="mobile-menu-inner"><div class="mini-label">THE ROOMS</div><a href="index.html">00 · Home</a><a href="memories.html">01 · Memories</a><a href="cinema.html">02 · Cinema</a><a href="letter.html">03 · Letter</a><a href="museum.html">04 · Museum</a><a href="forever.html">05 · Forever</a></div></div><div class="cursor"></div><div class="lumen"></div><div class="page-wipe" data-page-wipe=""><span>opening the next room</span></div><div class="toast" data-toast=""></div><div class="progress"><span data-progress=""></span></div>
+<main><section class="room-hero"><div class="wrap"><div class="eyebrow reveal">04 · curation</div><h1 class="display reveal">A wall<br/>for her.</h1><p class="reveal">Twenty-six frames. Some polished, some imperfect, all real. Tap any piece to open the full-resolution version.</p></div></section>
+<section aria-label="Next room" class="museum-top-next ultra-reveal" id="MUSEUM-TOP-NEXT">
+<div class="museum-next-card">
+<div>
+<div class="kicker">maybe the last room is waiting</div>
+<h3>There is one last room.</h3>
+<p>You can open Forever now, or simply keep scrolling through the frames first.</p>
+</div>
+<div class="actions">
+<a class="primary" href="forever.html">Open Forever →</a>
+<a href="#museum-gallery">Keep Scrolling ↓</a>
+</div>
+</div>
 </section>
-<section class="museum-wrap" id="museum-gallery" data-museum><div class="wrap"><div class="filter-row"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="night">Night</button><button class="filter" data-filter="day">Day</button><button class="filter" data-filter="close">Close</button></div><div class="masonry"><button class="museum-card" type="button" data-mood="day" data-photo="p01.webp"><img loading="lazy" src="assets/p01.webp" alt="Memory 01"><span class="overlay">memory 01</span></button><button class="museum-card" type="button" data-mood="day" data-photo="p02.webp"><img loading="lazy" src="assets/p02.webp" alt="Memory 02"><span class="overlay">memory 02</span></button><button class="museum-card" type="button" data-mood="day" data-photo="p03.webp"><img loading="lazy" src="assets/p03.webp" alt="Memory 03"><span class="overlay">memory 03</span></button><button class="museum-card" type="button" data-mood="night" data-photo="p04.webp"><img loading="lazy" src="assets/p04.webp" alt="Memory 04"><span class="overlay">memory 04</span></button><button class="museum-card" type="button" data-mood="night" data-photo="p05.webp"><img loading="lazy" src="assets/p05.webp" alt="Memory 05"><span class="overlay">memory 05</span></button><button class="museum-card" type="button" data-mood="night" data-photo="p06.webp"><img loading="lazy" src="assets/p06.webp" alt="Memory 06"><span class="overlay">memory 06</span></button><button class="museum-card" type="button" data-mood="night" data-photo="p07.webp"><img loading="lazy" src="assets/p07.webp" alt="Memory 07"><span class="overlay">memory 07</span></button><button class="museum-card" type="button" data-mood="night" data-photo="p08.webp"><img loading="lazy" src="assets/p08.webp" alt="Memory 08"><span class="overlay">memory 08</span></button><button class="museum-card" type="button" data-mood="night" data-photo="p09.webp"><img loading="lazy" src="assets/p09.webp" alt="Memory 09"><span class="overlay">memory 09</span></button><button class="museum-card" type="button" data-mood="night" data-photo="p10.webp"><img loading="lazy" src="assets/p10.webp" alt="Memory 10"><span class="overlay">memory 10</span></button><button class="museum-card" type="button" data-mood="night" data-photo="p11.webp"><img loading="lazy" src="assets/p11.webp" alt="Memory 11"><span class="overlay">memory 11</span></button><button class="museum-card" type="button" data-mood="night" data-photo="p12.webp"><img loading="lazy" src="assets/p12.webp" alt="Memory 12"><span class="overlay">memory 12</span></button><button class="museum-card" type="button" data-mood="night" data-photo="p13.webp"><img loading="lazy" src="assets/p13.webp" alt="Memory 13"><span class="overlay">memory 13</span></button><button class="museum-card" type="button" data-mood="night" data-photo="p14.webp"><img loading="lazy" src="assets/p14.webp" alt="Memory 14"><span class="overlay">memory 14</span></button><button class="museum-card" type="button" data-mood="night" data-photo="p15.webp"><img loading="lazy" src="assets/p15.webp" alt="Memory 15"><span class="overlay">memory 15</span></button><button class="museum-card" type="button" data-mood="night" data-photo="p16.webp"><img loading="lazy" src="assets/p16.webp" alt="Memory 16"><span class="overlay">memory 16</span></button><button class="museum-card" type="button" data-mood="night" data-photo="p17.webp"><img loading="lazy" src="assets/p17.webp" alt="Memory 17"><span class="overlay">memory 17</span></button><button class="museum-card" type="button" data-mood="close" data-photo="p18.webp"><img loading="lazy" src="assets/p18.webp" alt="Memory 18"><span class="overlay">memory 18</span></button><button class="museum-card" type="button" data-mood="close" data-photo="p19.webp"><img loading="lazy" src="assets/p19.webp" alt="Memory 19"><span class="overlay">memory 19</span></button><button class="museum-card" type="button" data-mood="close" data-photo="p20.webp"><img loading="lazy" src="assets/p20.webp" alt="Memory 20"><span class="overlay">memory 20</span></button><button class="museum-card" type="button" data-mood="close" data-photo="p21.webp"><img loading="lazy" src="assets/p21.webp" alt="Memory 21"><span class="overlay">memory 21</span></button><button class="museum-card" type="button" data-mood="close" data-photo="p22.webp"><img loading="lazy" src="assets/p22.webp" alt="Memory 22"><span class="overlay">memory 22</span></button><button class="museum-card" type="button" data-mood="close" data-photo="p23.webp"><img loading="lazy" src="assets/p23.webp" alt="Memory 23"><span class="overlay">memory 23</span></button><button class="museum-card" type="button" data-mood="close" data-photo="p24.webp"><img loading="lazy" src="assets/p24.webp" alt="Memory 24"><span class="overlay">memory 24</span></button><button class="museum-card" type="button" data-mood="close" data-photo="p25.webp"><img loading="lazy" src="assets/p25.webp" alt="Memory 25"><span class="overlay">memory 25</span></button><button class="museum-card" type="button" data-mood="close" data-photo="p26.webp"><img loading="lazy" src="assets/p26.webp" alt="Memory 26"><span class="overlay">memory 26</span></button></div></div></section>
-<div class="museum-scroll-cue" aria-hidden="true"><span></span>scroll for the next room</div>
+<section class="museum-wrap" data-museum="" id="museum-gallery"><div class="wrap"><div class="filter-row"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="night">Night</button><button class="filter" data-filter="day">Day</button><button class="filter" data-filter="close">Close</button></div><div class="masonry"><button class="museum-card" data-mood="day" data-photo="p01.webp" type="button"><img alt="Memory 01" loading="lazy" src="assets/p01.webp"/><span class="overlay">memory 01</span></button><button class="museum-card" data-mood="day" data-photo="p02.webp" type="button"><img alt="Memory 02" loading="lazy" src="assets/p02.webp"/><span class="overlay">memory 02</span></button><button class="museum-card" data-mood="day" data-photo="p03.webp" type="button"><img alt="Memory 03" loading="lazy" src="assets/p03.webp"/><span class="overlay">memory 03</span></button><button class="museum-card" data-mood="night" data-photo="p04.webp" type="button"><img alt="Memory 04" loading="lazy" src="assets/p04.webp"/><span class="overlay">memory 04</span></button><button class="museum-card" data-mood="night" data-photo="p05.webp" type="button"><img alt="Memory 05" loading="lazy" src="assets/p05.webp"/><span class="overlay">memory 05</span></button><button class="museum-card" data-mood="night" data-photo="p06.webp" type="button"><img alt="Memory 06" loading="lazy" src="assets/p06.webp"/><span class="overlay">memory 06</span></button><button class="museum-card" data-mood="night" data-photo="p07.webp" type="button"><img alt="Memory 07" loading="lazy" src="assets/p07.webp"/><span class="overlay">memory 07</span></button><button class="museum-card" data-mood="night" data-photo="p08.webp" type="button"><img alt="Memory 08" loading="lazy" src="assets/p08.webp"/><span class="overlay">memory 08</span></button><button class="museum-card" data-mood="night" data-photo="p09.webp" type="button"><img alt="Memory 09" loading="lazy" src="assets/p09.webp"/><span class="overlay">memory 09</span></button><button class="museum-card" data-mood="night" data-photo="p10.webp" type="button"><img alt="Memory 10" loading="lazy" src="assets/p10.webp"/><span class="overlay">memory 10</span></button><button class="museum-card" data-mood="night" data-photo="p11.webp" type="button"><img alt="Memory 11" loading="lazy" src="assets/p11.webp"/><span class="overlay">memory 11</span></button><button class="museum-card" data-mood="night" data-photo="p12.webp" type="button"><img alt="Memory 12" loading="lazy" src="assets/p12.webp"/><span class="overlay">memory 12</span></button><button class="museum-card" data-mood="night" data-photo="p13.webp" type="button"><img alt="Memory 13" loading="lazy" src="assets/p13.webp"/><span class="overlay">memory 13</span></button><button class="museum-card" data-mood="night" data-photo="p14.webp" type="button"><img alt="Memory 14" loading="lazy" src="assets/p14.webp"/><span class="overlay">memory 14</span></button><button class="museum-card" data-mood="night" data-photo="p15.webp" type="button"><img alt="Memory 15" loading="lazy" src="assets/p15.webp"/><span class="overlay">memory 15</span></button><button class="museum-card" data-mood="night" data-photo="p16.webp" type="button"><img alt="Memory 16" loading="lazy" src="assets/p16.webp"/><span class="overlay">memory 16</span></button><button class="museum-card" data-mood="night" data-photo="p17.webp" type="button"><img alt="Memory 17" loading="lazy" src="assets/p17.webp"/><span class="overlay">memory 17</span></button><button class="museum-card" data-mood="close" data-photo="p18.webp" type="button"><img alt="Memory 18" loading="lazy" src="assets/p18.webp"/><span class="overlay">memory 18</span></button><button class="museum-card" data-mood="close" data-photo="p19.webp" type="button"><img alt="Memory 19" loading="lazy" src="assets/p19.webp"/><span class="overlay">memory 19</span></button><button class="museum-card" data-mood="close" data-photo="p20.webp" type="button"><img alt="Memory 20" loading="lazy" src="assets/p20.webp"/><span class="overlay">memory 20</span></button><button class="museum-card" data-mood="close" data-photo="p21.webp" type="button"><img alt="Memory 21" loading="lazy" src="assets/p21.webp"/><span class="overlay">memory 21</span></button><button class="museum-card" data-mood="close" data-photo="p22.webp" type="button"><img alt="Memory 22" loading="lazy" src="assets/p22.webp"/><span class="overlay">memory 22</span></button><button class="museum-card" data-mood="close" data-photo="p23.webp" type="button"><img alt="Memory 23" loading="lazy" src="assets/p23.webp"/><span class="overlay">memory 23</span></button><button class="museum-card" data-mood="close" data-photo="p24.webp" type="button"><img alt="Memory 24" loading="lazy" src="assets/p24.webp"/><span class="overlay">memory 24</span></button><button class="museum-card" data-mood="close" data-photo="p25.webp" type="button"><img alt="Memory 25" loading="lazy" src="assets/p25.webp"/><span class="overlay">memory 25</span></button><button class="museum-card" data-mood="close" data-photo="p26.webp" type="button"><img alt="Memory 26" loading="lazy" src="assets/p26.webp"/><span class="overlay">memory 26</span></button></div></div></section>
+<div aria-hidden="true" class="museum-scroll-cue"><span></span>scroll for the next room</div>
 <section class="museum-next ultra-reveal">
-  <div class="museum-next-card">
-    <div>
-      <div class="kicker">next destination</div>
-      <h3>There is one last room.</h3>
-      <p>You've seen the frames. Now take the slow door to the part that was made to stay.</p>
-    </div>
-    <div class="museum-next-actions">
-      <a class="primary" href="forever.html">Open Forever →</a>
-      <a href="index.html#rooms">Back to Rooms</a>
-    </div>
-  </div>
+<div class="museum-next-card">
+<div>
+<div class="kicker">next destination</div>
+<h3>There is one last room.</h3>
+<p>You've seen the frames. Now take the slow door to the part that was made to stay.</p>
+</div>
+<div class="museum-next-actions">
+<a class="primary" href="forever.html">Open Forever →</a>
+<a href="index.html#rooms">Back to Rooms</a>
+</div>
+</div>
 </section>
-</main><div class="modal" data-photo-modal><div class="modal-card"><div class="modal-top"><span>full frame</span><button class="modal-close" data-modal-close>×</button></div><div class="modal-img-wrap"><img class="modal-img" data-modal-img alt="Expanded memory"></div><div class="modal-caption" data-modal-caption></div></div></div><footer class="footer"><div>04 / MUSEUM</div><div class="footer-right">tap a photograph · stay with it</div></footer>
-
-
-
-</div><script src="app.js"></script>
-
-
+</main><div class="modal" data-photo-modal=""><div class="modal-card"><div class="modal-top"><span>full frame</span><button class="modal-close" data-modal-close="">×</button></div><div class="modal-img-wrap"><img alt="Expanded memory" class="modal-img" data-modal-img=""/></div><div class="modal-caption" data-modal-caption=""></div></div></div><footer class="footer"><div>04 / MUSEUM</div><div class="footer-right">tap a photograph · stay with it</div></footer>
+<script src="app.js"></script>
 <script id="safe-page-transition-js">
 (()=>{
  const reduce=matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
@@ -346,8 +330,6 @@ if(!reduce){
 }
 })();
 </script>
-
-
 <script id="akk-galaxy-background-js">
 (()=>{"use strict";const reduce=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;if(reduce)return;
 const wrap=document.createElement("div");wrap.className="akk-cosmos";wrap.innerHTML='<canvas aria-hidden="true"></canvas><div class="galaxy-haze"></div><div class="cosmic-vignette"></div><div class="cosmic-hud"><span class="dot"></span><span>deep space // quiet orbit</span></div>';document.body.prepend(wrap);
@@ -374,7 +356,6 @@ document.body.prepend(wrap);
 if(reduce) wrap.style.opacity=".08";
 })();
 </script>
-
 <script id="akk-scroll-tech-js">
 (()=>{"use strict";
 const reduce=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;

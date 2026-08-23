@@ -217,20 +217,8 @@
   ],
   "tracks": [
     {
-      "title": "Haareya",
-      "file": "audio_1.mp3"
-    },
-    {
-      "title": "Humnava Mere",
-      "file": "audio_2.mp3"
-    },
-    {
       "title": "Jaavedaan Hai",
       "file": "audio_3.mp3"
-    },
-    {
-      "title": "Kangana Tera Ni",
-      "file": "audio_4.mp3"
     }
   ]
 }

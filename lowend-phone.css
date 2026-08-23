@@ -1,0 +1,21 @@
+@media (pointer: coarse), (max-width: 760px){
+  html{overflow-x:hidden!important;scroll-behavior:auto!important;-webkit-text-size-adjust:100%}
+  body{overflow-x:hidden!important;overscroll-behavior-x:none!important;width:100%!important}
+  /* Disable only continuous decorative engines, not layout. */
+  .ambient-canvas,.entry-canvas,[data-space],.akk-cosmos,.akk-rich-layer,.akk-deco,.akk-glowline,.akk-velocity-glow,.akk-swipe-cue,.lumen,.cursor{display:none!important}
+  .akk-ambient::before,.akk-ambient::after,.orbit-ring,.orbit-photo,.hero-stage,.hero-core,.halo,.forever-hero .halo,.forever-panel::before,.memory-orbit::after,.memory-orbit-core,.letter-orbit,.entry-glyph,.record-aura,.sound-photo,.cinema-note-card::before,.cinema-note-pills span,.letter-memory-row figure{animation:none!important}
+  .room-card::before,.museum-card::before,.video-thumb::before,.track::before,.btn::after,.nav-links a::after,.track::after,.room-card:hover img,.museum-card:hover img,.video-thumb:hover img,.forever-panel .card:hover img{animation:none!important;transition:none!important}
+  .topbar,.mobile-menu,.mobile-menu-inner,.toast,.scene-shell,.panel,.glass,.room-card,.museum-card,.video-frame{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .topbar{left:10px!important;right:10px!important;width:auto!important;transform:none!important}
+  .mobile-menu{overflow-y:auto!important;-webkit-overflow-scrolling:touch!important}
+  .mobile-menu-inner{max-height:calc(100dvh - 28px)!important;overflow:auto!important}
+  img,video,svg,canvas{max-width:100%!important}
+  video{height:auto!important}
+  .reveal,.reveal-scale{transition:opacity .2s ease!important;transform:none!important}
+  .memory-orbit{height:430px!important;min-height:430px!important}
+  .memory-node{transition:none!important;box-shadow:0 8px 22px rgba(0,0,0,.28)!important}
+  .memory-node:hover,.memory-node.selected{transform:translate(-50%,-50%) rotate(var(--a)) translateY(calc(var(--d) * -1)) rotate(calc(var(--a) * -1))!important}
+  .film-slide.active .film-image img,.film-slide.active .film-copy h2,.film-slide.active .film-copy p{animation:none!important}
+  .forever-panel .card,.film-image,.letter-photo,.video-frame,.room-card,.museum-card{box-shadow:0 18px 45px rgba(0,0,0,.28)!important}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

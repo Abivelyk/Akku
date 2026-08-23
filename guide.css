@@ -1,0 +1,21 @@
+
+.akku-guide{position:fixed;inset:0;z-index:30000;display:grid;place-items:center;background:#05050a;color:#faf8f7;overflow:hidden}
+.akku-guide.hidden{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s ease,visibility .35s ease}
+.akku-guide-backdrop{position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(169,140,255,.16),transparent 25%),radial-gradient(circle at 50% 75%,rgba(255,127,169,.12),transparent 38%),#05050a}
+.akku-guide-backdrop::before,.akku-guide-backdrop::after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.06);animation:guideOrbit 16s linear infinite}
+.akku-guide-backdrop::before{width:70vmin;height:70vmin}.akku-guide-backdrop::after{width:46vmin;height:46vmin;animation-direction:reverse;animation-duration:11s}
+.akku-guide-film{position:relative;width:min(90vw,620px);min-height:min(78svh,680px);padding:34px 28px 24px;border:1px solid rgba(255,255,255,.1);border-radius:30px;background:rgba(8,8,15,.78);box-shadow:0 30px 120px rgba(0,0,0,.55);display:grid;grid-template-rows:auto 1fr auto;text-align:center;overflow:hidden}
+.akku-guide-kicker{font:700 9px/1 Inter,system-ui;letter-spacing:.3em;text-transform:uppercase;color:#9c96a5}
+.akku-guide-scene{display:none;align-self:center;animation:guideIn .55s cubic-bezier(.16,1,.3,1) both}
+.akku-guide-scene.is-active{display:block}
+.guide-orb{width:120px;height:120px;margin:0 auto 28px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.14);font-size:38px;background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.22),rgba(255,127,169,.08) 45%,rgba(169,140,255,.08) 75%);box-shadow:0 0 80px rgba(169,140,255,.18)}
+.guide-number{font:700 9px/1 Inter,system-ui;letter-spacing:.26em;color:#ffb4d0;margin-bottom:12px}
+.akku-guide h2{font:500 clamp(42px,9vw,82px)/.9 "Iowan Old Style",Georgia,serif;letter-spacing:-.045em;margin:0 auto 18px;max-width:560px}
+.akku-guide p{max-width:500px;margin:0 auto;color:#b8b2bf;font:400 14px/1.9 Inter,system-ui}
+.akku-guide-foot{display:grid;gap:18px;justify-items:center}
+.guide-dots{display:flex;gap:7px}.guide-dots button{width:22px;height:3px;border:0;border-radius:9px;background:rgba(255,255,255,.12);padding:0}.guide-dots button.active{background:linear-gradient(90deg,#ff7fa9,#a98cff)}
+.guide-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}.guide-actions button{min-height:46px;padding:0 18px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;font:600 10px/1 Inter,system-ui;letter-spacing:.1em;text-transform:uppercase}.guide-enter{background:linear-gradient(135deg,rgba(255,127,169,.25),rgba(169,140,255,.22))!important}
+@keyframes guideIn{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes guideOrbit{to{transform:rotate(360deg)}}
+@media(max-width:760px){.akku-guide-film{width:calc(100vw - 22px);min-height:calc(100dvh - 22px);border-radius:24px;padding:24px 18px 18px}.guide-orb{width:92px;height:92px;font-size:30px;margin-bottom:20px}.akku-guide p{font-size:13px}.guide-actions button{min-height:48px}.guide-enter{width:100%}}
+@media(prefers-reduced-motion:reduce){.akku-guide-backdrop::before,.akku-guide-backdrop::after,.akku-guide-scene{animation:none!important}}

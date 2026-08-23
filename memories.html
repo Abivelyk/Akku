@@ -1,9 +1,5 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#05050a"><link rel="stylesheet" href="styles.css"><link rel="manifest" href="manifest.json"><meta name="color-scheme" content="dark"><title>Memories · AKKÚ</title>
-
-
-
-
-
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/><meta content="#05050a" name="theme-color"/><link href="styles.css" rel="stylesheet"/><link href="manifest.json" rel="manifest"/><meta content="dark" name="color-scheme"/><title>Memories · AKKÚ</title>
 <style id="safe-page-transition">
 body.safe-page-enter{animation:safeIn .45s cubic-bezier(.16,1,.3,1) both}
 body.safe-page-exit{animation:safeOut .18s ease both;pointer-events:none}
@@ -94,8 +90,6 @@ body{position:relative;isolation:isolate}
  .akk-ambient::before,.akk-ambient::after,.akk-deco .spark,{animation:none!important}
 }
 </style>
-
-
 <style id="akk-galaxy-background">
 .akk-cosmos{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .akk-cosmos canvas{width:100%;height:100%;display:block;opacity:.9}
@@ -130,7 +124,6 @@ main,.screen,.page,.room,.museum-wrap,.letter-wrap,.cinema-wrap,.sound-wrap,.mem
   body::after{opacity:.92}
 }
 </style>
-
 <style id="akk-late-room-brightness">
 /* Later-room readability: lift surfaces without washing out the night-sky aesthetic. */
 .museum-wrap, .letter-wrap, .cinema-wrap, .sound-wrap, .memory-wrap{
@@ -140,7 +133,6 @@ main,.screen,.page,.room,.museum-wrap,.letter-wrap,.cinema-wrap,.sound-wrap,.mem
   box-shadow:0 18px 70px rgba(0,0,0,.18),inset 0 1px rgba(255,255,255,.055);
 }
 </style>
-
 <style id="akk-rich-decor">
 .akk-rich-layer{
  position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden;mix-blend-mode:normal;opacity:.12;
@@ -175,7 +167,6 @@ main,.screen,.page,.room,.museum-wrap,.letter-wrap,.cinema-wrap,.sound-wrap,.mem
 @media(max-width:700px){.akk-rich-layer{opacity:.14}.akk-rich-layer img{width:190px;top:5vh;right:-55px;opacity:.18}}
 @media(prefers-reduced-motion:reduce){.akk-rich-layer *{animation:none!important}}
 </style>
-
 <style id="akk-scroll-tech">
 html{scroll-behavior:smooth}
 body{--akk-scroll-p:0}
@@ -202,36 +193,31 @@ main,.topbar,footer{position:relative;z-index:8}
 .akk-rich-layer,.akk-cosmos,.akk-ambient,.akk-deco,.akk-glowline{z-index:1!important}
 /* These rooms should never become visually empty due to a missed animation callback. */
 .museum-wrap,.museum-next,.museum-top-next,.forever-panel,.end-card{opacity:1!important;visibility:visible!important}
-</style><link rel="stylesheet" href="mobile-lite.css">
-</head><body><nav class="topbar"><a class="brand" href="index.html"><span class="brand-dot"></span>AKKÚ <i>/</i> UNIVERSE</a><div class="nav-links"><a href="index.html">Home</a><a class="active" href="memories.html">Memories</a><a href="cinema.html">Cinema</a><a href="letter.html">Letter</a><a href="museum.html">Museum</a><a href="soundtrack.html">Sound</a><a href="forever.html">Forever</a></div><button class="nav-menu" data-menu>☰</button></nav><div class="mobile-menu" data-menu-panel><div class="mobile-menu-inner"><div class="mini-label">THE ROOMS</div><a href="index.html">00 · Home</a><a href="memories.html">01 · Memories</a><a href="cinema.html">02 · Cinema</a><a href="letter.html">03 · Letter</a><a href="museum.html">04 · Museum</a><a href="soundtrack.html">05 · Soundtrack</a><a href="forever.html">06 · Forever</a></div></div><div class="cursor"></div><div class="lumen"></div><div class="page-wipe" data-page-wipe><span>opening the next room</span></div><div class="toast" data-toast></div><div class="progress"><span data-progress></span></div>
-<main><section class="room-hero"><div class="wrap"><div class="eyebrow reveal">01 · archive</div><h1 class="display reveal">The moments<br>I kept.</h1><p class="reveal">Some photographs are just photographs. Some become little rooms in your head. Swipe this one. Tap a frame. Take your time.</p></div></section>
-<section class="memory-universe wrap" data-memory-universe>
-  <div class="memory-universe-head reveal">
-    <div><div class="mini-label">01.5 · MEMORY CONSTELLATION</div><h2 class="display">Touch a memory.<br><em>Watch it wake up.</em></h2></div>
-    <p>Each little card is a doorway. Drag the orbit on a phone, hover it on desktop, and tap one to pull the memory into focus.</p>
-  </div>
-  <div class="memory-orbit" data-memory-orbit>
-    <div class="memory-orbit-core"><span>♡</span><small>tap me</small></div>
-    <button class="memory-node n1" data-memory-node data-photo="p11.webp" data-caption="the kind of night you remember" style="--a:-58deg;--d:120px"><img src="assets/p11.webp" alt="Memory 1"><span>01</span></button>
-    <button class="memory-node n2" data-memory-node data-photo="p03.webp" data-caption="the smile that needed no explanation" style="--a:2deg;--d:138px"><img src="assets/p03.webp" alt="Memory 2"><span>02</span></button>
-    <button class="memory-node n3" data-memory-node data-photo="p09.webp" data-caption="one more picture" style="--a:65deg;--d:122px"><img src="assets/p09.webp" alt="Memory 3"><span>03</span></button>
-    <button class="memory-node n4" data-memory-node data-photo="p22.webp" data-caption="flowers and a little softness" style="--a:128deg;--d:142px"><img src="assets/p22.webp" alt="Memory 4"><span>04</span></button>
-    <button class="memory-node n5" data-memory-node data-photo="p24.webp" data-caption="the frame I kept coming back to" style="--a:188deg;--d:124px"><img src="assets/p24.webp" alt="Memory 5"><span>05</span></button>
-    <button class="memory-node n6" data-memory-node data-photo="p10.webp" data-caption="the candid one" style="--a:245deg;--d:138px"><img src="assets/p10.webp" alt="Memory 6"><span>06</span></button>
-  </div>
-  <div class="memory-readout" data-memory-readout><span>MEMORY READY</span><b>Tap an orbiting frame.</b><small>the room changes with you</small></div>
-  <button class="btn rose" data-memory-random>Surprise me ↗</button>
+</style><link rel="stylesheet" href="lowend-phone.css">
+</head><body><nav class="topbar"><a class="brand" href="index.html"><span class="brand-dot"></span>AKKÚ <i>/</i> UNIVERSE</a><div class="nav-links"><a href="index.html">Home</a><a class="active" href="memories.html">Memories</a><a href="cinema.html">Cinema</a><a href="letter.html">Letter</a><a href="museum.html">Museum</a><a href="forever.html">Forever</a></div><button class="nav-menu" data-menu="">☰</button></nav><div class="mobile-menu" data-menu-panel=""><div class="mobile-menu-inner"><div class="mini-label">THE ROOMS</div><a href="index.html">00 · Home</a><a href="memories.html">01 · Memories</a><a href="cinema.html">02 · Cinema</a><a href="letter.html">03 · Letter</a><a href="museum.html">04 · Museum</a><a href="forever.html">05 · Forever</a></div></div><div class="cursor"></div><div class="lumen"></div><div class="page-wipe" data-page-wipe=""><span>opening the next room</span></div><div class="toast" data-toast=""></div><div class="progress"><span data-progress=""></span></div>
+<main><section class="room-hero"><div class="wrap"><div class="eyebrow reveal">01 · archive</div><h1 class="display reveal">The moments<br/>I kept.</h1><p class="reveal">Some photographs are just photographs. Some become little rooms in your head. Swipe this one. Tap a frame. Take your time.</p></div></section>
+<section class="memory-universe wrap" data-memory-universe="">
+<div class="memory-universe-head reveal">
+<div><div class="mini-label">01.5 · MEMORY CONSTELLATION</div><h2 class="display">Touch a memory.<br/><em>Watch it wake up.</em></h2></div>
+<p>Each little card is a doorway. Drag the orbit on a phone, hover it on desktop, and tap one to pull the memory into focus.</p>
+</div>
+<div class="memory-orbit" data-memory-orbit="">
+<div class="memory-orbit-core"><span>♡</span><small>tap me</small></div>
+<button class="memory-node n1" data-caption="the kind of night you remember" data-memory-node="" data-photo="p11.webp" style="--a:-58deg;--d:120px"><img alt="Memory 1" src="assets/p11.webp"/><span>01</span></button>
+<button class="memory-node n2" data-caption="the smile that needed no explanation" data-memory-node="" data-photo="p03.webp" style="--a:2deg;--d:138px"><img alt="Memory 2" src="assets/p03.webp"/><span>02</span></button>
+<button class="memory-node n3" data-caption="one more picture" data-memory-node="" data-photo="p09.webp" style="--a:65deg;--d:122px"><img alt="Memory 3" src="assets/p09.webp"/><span>03</span></button>
+<button class="memory-node n4" data-caption="flowers and a little softness" data-memory-node="" data-photo="p22.webp" style="--a:128deg;--d:142px"><img alt="Memory 4" src="assets/p22.webp"/><span>04</span></button>
+<button class="memory-node n5" data-caption="the frame I kept coming back to" data-memory-node="" data-photo="p24.webp" style="--a:188deg;--d:124px"><img alt="Memory 5" src="assets/p24.webp"/><span>05</span></button>
+<button class="memory-node n6" data-caption="the candid one" data-memory-node="" data-photo="p10.webp" style="--a:245deg;--d:138px"><img alt="Memory 6" src="assets/p10.webp"/><span>06</span></button>
+</div>
+<div class="memory-readout" data-memory-readout=""><span>MEMORY READY</span><b>Tap an orbiting frame.</b><small>the room changes with you</small></div>
+<button class="btn rose" data-memory-random="">Surprise me ↗</button>
 </section>
-<section class="film" data-film><div class="film-stage"><article class="film-slide active"><div class="film-image"><img src="assets/p11.webp" alt="memory 1"></div><div class="film-copy"><div class="n">frame 01</div><h2>the kind of night you remember.</h2><p>Warm light, flowers, black fabric, a little too much hair, and a face that somehow made the whole frame feel softer.</p><button class="btn rose open-photo" data-photo="p11.webp" data-caption="frame 01 · the kind of night you remember">Open full frame</button></div></article><article class="film-slide"><div class="film-image"><img src="assets/p03.webp" alt="memory 2"></div><div class="film-copy"><div class="n">frame 02</div><h2>the smile that needed no explanation.</h2><p>The best photographs are not always the sharpest ones. Sometimes they just catch the exact second the person looks like herself.</p><button class="btn rose open-photo" data-photo="p03.webp" data-caption="frame 02 · the smile that needed no explanation">Open full frame</button></div></article><article class="film-slide"><div class="film-image"><img src="assets/p09.webp" alt="memory 3"></div><div class="film-copy"><div class="n">frame 03</div><h2>one more picture.</h2><p>There is always one more. Somehow that became part of the ritual.</p><button class="btn rose open-photo" data-photo="p09.webp" data-caption="frame 03 · one more picture">Open full frame</button></div></article></div><div class="film-controls"><button data-film-prev aria-label="previous">←</button><button data-film-next aria-label="next">→</button><div class="film-dots"><button class="film-dot active" aria-label="frame 1"></button><button class="film-dot" aria-label="frame 2"></button><button class="film-dot" aria-label="frame 3"></button></div><span style="margin-left:auto;color:#77717d;font-size:9px;letter-spacing:.16em;text-transform:uppercase">swipe on phone</span></div></section>
-<section class="page" style="padding:40px 0 120px"><div class="wrap"><div class="section-head reveal"><div><div class="mini-label">A SMALL ARCHIVE</div><h2 class="display">The rest<br>is waiting.</h2></div><p class="section-intro">The Museum has all 26 photographs. This room is intentionally slower. It is for the few frames that deserve more time than a fast scroll gives them.</p></div><div class="rooms" style="padding-bottom:0"><a class="room-card reveal" href="museum.html"><img src="assets/p24.webp" alt="museum"><span class="room-arrow">↗</span><div><div class="room-no">04 · CURATION</div><h3>Go to the Museum</h3><p>Twenty-six photographs. One wall. No rush.</p></div></a><a class="room-card reveal" href="cinema.html"><img src="assets/p10.webp" alt="cinema"><span class="room-arrow">↗</span><div><div class="room-no">02 · MOTION</div><h3>See her move</h3><p>Six little pieces of motion with their own soundtrack.</p></div></a></div></div></section></main>
-<div class="modal" data-photo-modal><div class="modal-card"><div class="modal-top"><span>full frame</span><button class="modal-close" data-modal-close>×</button></div><div class="modal-img-wrap"><img class="modal-img" data-modal-img alt="Expanded memory"></div><div class="modal-caption" data-modal-caption></div></div></div>
+<section class="film" data-film=""><div class="film-stage"><article class="film-slide active"><div class="film-image"><img alt="memory 1" src="assets/p11.webp"/></div><div class="film-copy"><div class="n">frame 01</div><h2>the kind of night you remember.</h2><p>Warm light, flowers, black fabric, a little too much hair, and a face that somehow made the whole frame feel softer.</p><button class="btn rose open-photo" data-caption="frame 01 · the kind of night you remember" data-photo="p11.webp">Open full frame</button></div></article><article class="film-slide"><div class="film-image"><img alt="memory 2" src="assets/p03.webp"/></div><div class="film-copy"><div class="n">frame 02</div><h2>the smile that needed no explanation.</h2><p>The best photographs are not always the sharpest ones. Sometimes they just catch the exact second the person looks like herself.</p><button class="btn rose open-photo" data-caption="frame 02 · the smile that needed no explanation" data-photo="p03.webp">Open full frame</button></div></article><article class="film-slide"><div class="film-image"><img alt="memory 3" src="assets/p09.webp"/></div><div class="film-copy"><div class="n">frame 03</div><h2>one more picture.</h2><p>There is always one more. Somehow that became part of the ritual.</p><button class="btn rose open-photo" data-caption="frame 03 · one more picture" data-photo="p09.webp">Open full frame</button></div></article></div><div class="film-controls"><button aria-label="previous" data-film-prev="">←</button><button aria-label="next" data-film-next="">→</button><div class="film-dots"><button aria-label="frame 1" class="film-dot active"></button><button aria-label="frame 2" class="film-dot"></button><button aria-label="frame 3" class="film-dot"></button></div><span style="margin-left:auto;color:#77717d;font-size:9px;letter-spacing:.16em;text-transform:uppercase">swipe on phone</span></div></section>
+<section class="page" style="padding:40px 0 120px"><div class="wrap"><div class="section-head reveal"><div><div class="mini-label">A SMALL ARCHIVE</div><h2 class="display">The rest<br/>is waiting.</h2></div><p class="section-intro">The Museum has all 26 photographs. This room is intentionally slower. It is for the few frames that deserve more time than a fast scroll gives them.</p></div><div class="rooms" style="padding-bottom:0"><a class="room-card reveal" href="museum.html"><img alt="museum" src="assets/p24.webp"/><span class="room-arrow">↗</span><div><div class="room-no">04 · CURATION</div><h3>Go to the Museum</h3><p>Twenty-six photographs. One wall. No rush.</p></div></a><a class="room-card reveal" href="cinema.html"><img alt="cinema" src="assets/p10.webp"/><span class="room-arrow">↗</span><div><div class="room-no">02 · MOTION</div><h3>See her move</h3><p>Six little pieces of motion with their own soundtrack.</p></div></a></div></div></section></main>
+<div class="modal" data-photo-modal=""><div class="modal-card"><div class="modal-top"><span>full frame</span><button class="modal-close" data-modal-close="">×</button></div><div class="modal-img-wrap"><img alt="Expanded memory" class="modal-img" data-modal-img=""/></div><div class="modal-caption" data-modal-caption=""></div></div></div>
 <footer class="footer"><div>01 / MEMORIES</div><div class="footer-right">swipe · tap · stay</div></footer>
-
-
-
-</div><script src="app.js"></script>
-
-
+<script src="app.js"></script>
 <script id="safe-page-transition-js">
 (()=>{
  const reduce=matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
@@ -275,8 +261,6 @@ if(!reduce){
 }
 })();
 </script>
-
-
 <script id="akk-galaxy-background-js">
 (()=>{"use strict";const reduce=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;if(reduce)return;
 const wrap=document.createElement("div");wrap.className="akk-cosmos";wrap.innerHTML='<canvas aria-hidden="true"></canvas><div class="galaxy-haze"></div><div class="cosmic-vignette"></div><div class="cosmic-hud"><span class="dot"></span><span>deep space // quiet orbit</span></div>';document.body.prepend(wrap);
@@ -303,7 +287,6 @@ document.body.prepend(wrap);
 if(reduce) wrap.style.opacity=".08";
 })();
 </script>
-
 <script id="akk-scroll-tech-js">
 (()=>{"use strict";
 const reduce=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
