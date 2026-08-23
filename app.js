@@ -1,352 +1,287 @@
-(()=>{
-'use strict';
-const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
-const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const touch=matchMedia('(pointer:coarse)').matches || 'ontouchstart' in window;
+(() => {
+  'use strict';
 
-/* ===== basic reveal ===== */
-const reveals=$$('.reveal,.reveal-scale');
-if(reduce || !('IntersectionObserver' in window)) reveals.forEach(e=>e.classList.add('in'));
-else { const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08}); reveals.forEach(e=>io.observe(e)); }
+  const photos = Array.from({length:26}, (_,i)=>`p${String(i+1).padStart(2,'0')}.webp`);
+  const captions = [
+    'The first little universe','Quiet light','One of those days','A soft moment','The kind worth keeping','A frame that stayed',
+    'A tiny piece of summer','A little chaos','A memory in focus','The face behind the feeling','A day I would replay','Warmth, somehow',
+    'Another ordinary miracle','A picture with a heartbeat','The details matter','Nothing loud, just real','The smile that wins','A frame for later',
+    'The calm between things','This one feels like home','A little closer','A day worth remembering','The part I kept','The softest proof','Saved for forever','The last photograph'
+  ];
+  const forever = [
+    ['The little things','The jokes that made no sense, the random check-ins, the quiet comfort of knowing someone was there.','p14.webp'],
+    ['The photographs','Some pictures feel like proof that a moment happened exactly the way you remember it.','p19.webp'],
+    ['The late nights','The conversations that wandered everywhere and nowhere, and somehow made the night smaller.','p22.webp'],
+    ['The ordinary magic','No grand explanation. Just two people making ordinary minutes feel worth keeping.','p24.webp'],
+    ['The part that stays','Some memories do not ask permission. They simply become part of the map of you.','p26.webp']
+  ];
+  const rooms = ['home','memories','cinema','letter','museum','forever'];
+  const roomLabels = {home:'Home',memories:'Memories',cinema:'Cinema',letter:'Letter',museum:'Museum',forever:'Forever'};
 
-/* ===== scroll progress ===== */
-const progress=$('[data-progress]');
-const progressTick=()=>{ if(!progress)return; const max=document.documentElement.scrollHeight-innerHeight; progress.style.width=(max>1?Math.min(100,Math.max(0,scrollY/max*100)):100)+'%'; };
-addEventListener('scroll',progressTick,{passive:true}); addEventListener('resize',progressTick,{passive:true}); progressTick();
+  const app = document.getElementById('app');
+  let musicReady = false;
+  let activeRoom = 'home';
+  let currentPhoto = 0;
+  let cinemaIndex = 0;
+  let resumeMusicAfterVideo = false;
+  let introDismissed = false;
 
-/* ===== toast ===== */
-let toastTimer=0;
-function toast(msg){const el=$('[data-toast]'); if(!el)return; el.textContent=msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),2200);}
+  function esc(s){return String(s).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
 
-/* ===== touch/click sparkle ===== */
-const colors=['#ff77ae','#a98cff','#89e9ff','#ffd7a4','#fff'];
-function burst(x,y){
-  if(reduce || touch)return;
-  const ring=document.createElement('i'); ring.className='touch-wave'; ring.style.left=x+'px'; ring.style.top=y+'px'; document.body.appendChild(ring); ring.addEventListener('animationend',()=>ring.remove(),{once:true});
-  const n=touch?4:7;
-  for(let i=0;i<n;i++){
-    const s=document.createElement('i'); s.className='touch-spark'; s.textContent=i%2?'✦':'•'; s.style.left=x+'px'; s.style.top=y+'px'; s.style.color=colors[i%colors.length];
-    const a=Math.PI*2*i/n, r=18+Math.random()*28; s.style.setProperty('--sx',Math.cos(a)*r+'px'); s.style.setProperty('--sy',Math.sin(a)*r+'px'); document.body.appendChild(s); s.addEventListener('animationend',()=>s.remove(),{once:true});
+  app.innerHTML = `
+    <header class="topbar" id="topbar">
+      <button class="brand" data-route="home" aria-label="AKKÚ home"><span class="brand-dot"></span>AKKÚ <span style="opacity:.35">·</span> THE UNIVERSE</button>
+      <nav class="nav" id="nav">${rooms.map(r=>`<button data-route="${r}" class="${r==='home'?'active':''}">${roomLabels[r]}</button>`).join('')}</nav>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+    </header>
+    <div class="mobile-nav" id="mobileNav"><div class="mobile-nav-inner">${rooms.map(r=>`<button data-route="${r}">${roomLabels[r]}</button>`).join('')}</div></div>
+    <div class="progress" id="progress"></div>
+    <div class="room-chip" id="roomChip">HOME</div>
+    <div class="swipe-cue" id="swipeCue"><span>SWIPE</span><i></i><b>TO EXPLORE</b></div>
+    <div class="archive-hud" aria-hidden="true">
+      <div class="archive-hud-top"><span class="hud-live"><i></i>LIVE ARCHIVE</span><span class="hud-id">AKKÚ / 70 PB // VISUAL FICTION</span></div>
+      <div class="hud-grid">
+        <div><b data-stat-room>HOME</b><small>ACTIVE NODE</small></div>
+        <div><b>026</b><small>MEMORY OBJECTS</small></div>
+        <div><b>002</b><small>MOTION FILES</small></div>
+        <div><b>001</b><small>AUDIO STREAM</small></div>
+      </div>
+      <div class="hud-scan"></div>
+    </div>
+    <div class="archive-badge" aria-hidden="true"><span>NODE</span><b data-node-id>01</b><i></i></div>
+    <main>
+      ${rooms.map(r=>`<section class="room ${r==='home'?'active':''}" data-room="${r}"></section>`).join('')}
+      <aside class="archive-drawer" aria-hidden="true">
+        <div class="drawer-head"><span>ARCHIVE FABRIC</span><b>01 // 05</b></div>
+        <div class="drawer-line"><i></i><span>Memory lattice</span><strong>STABLE</strong></div>
+        <div class="drawer-line"><i></i><span>Motion cluster</span><strong>READY</strong></div>
+        <div class="drawer-line"><i></i><span>Letter index</span><strong>OPEN</strong></div>
+        <div class="drawer-line"><i></i><span>Archive depth</span><strong>70.0 PB*</strong></div>
+        <small>*visual storytelling fiction, not storage capacity</small>
+      </aside>
+    </main>
+    <div class="music-dock paused" id="musicDock">
+      <button class="music-toggle" id="musicToggle" aria-label="Play music">▶</button>
+      <div class="music-copy"><b>Jaavedaan Hai</b><span>AKKÚ · continuous soundtrack</span></div>
+      <div class="music-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <audio id="music" preload="auto" loop playsinline src="assets/audio_3.mp3"></audio>
+    </div>
+    <div class="overlay" id="guideOverlay">
+      <div class="guide">
+        <div class="guide-kicker">A note before you enter</div>
+        <div class="guide-stage">
+          <div class="guide-step active"><div class="guide-icon">🎧</div><h2>Use headphones.</h2><p>There is one song for this little universe. Let it stay in the background while you move through the rooms.</p></div>
+          <div class="guide-step"><div class="guide-icon">📖</div><h2>Read everything.</h2><p>Nothing here is filler. The small lines are part of the story, because apparently subtlety was worth the extra engineering.</p></div>
+          <div class="guide-step"><div class="guide-icon">🎬</div><h2>Watch carefully.</h2><p>Take your time. Open the photographs. Watch the two clips. Let the pages breathe before moving on.</p></div>
+        </div>
+        <div class="guide-progress"><i class="active"></i><i></i><i></i></div>
+        <div class="guide-actions"><button class="btn" id="guideBack" style="display:none">Back</button><button class="btn primary" id="guideNext">Next</button></div>
+      </div>
+    </div>
+    <div class="lightbox" id="lightbox"><div class="lightbox-inner"><img id="lightboxImg" alt="Memory"><div class="lightbox-tools"><button id="lbPrev">←</button><button id="lbClose">Close</button><button id="lbNext">→</button></div></div></div>
+  `;
+
+  function roomFrame(kicker,title,copy,actions=''){
+    return `<div class="section-in"><div class="room-head"><div><div class="eyebrow">${kicker}</div><h1>${title}</h1></div><p>${copy}</p></div>${actions}</div>`;
   }
-  if(Math.random()<.7){ const h=document.createElement('i'); h.className='touch-heart'; h.textContent=Math.random()<.7?'♡':'✧'; h.style.left=x+'px'; h.style.top=y+'px'; h.style.color=colors[(Math.random()*colors.length)|0]; h.style.setProperty('--hx',(Math.random()*40-20)+'px'); h.style.setProperty('--hy',(-30-Math.random()*25)+'px'); document.body.appendChild(h); h.addEventListener('animationend',()=>h.remove(),{once:true}); }
-}
-document.addEventListener('pointerdown',e=>burst(e.clientX,e.clientY),{passive:true});
 
-/* ===== ambient stars ===== */
-if(!reduce && !touch){
-  const c=document.createElement('canvas'); c.className='ambient-canvas'; document.body.appendChild(c); const ctx=c.getContext('2d');
-  let W=0,H=0,dpr=1; const count=touch?34:80; const pts=Array.from({length:count},()=>({x:Math.random(),y:Math.random(),r:.3+Math.random()*1.2,p:Math.random()*6.28,a:.1+Math.random()*.45}));
-  function resize(){dpr=Math.min(devicePixelRatio||1,touch?1.2:1.5);W=innerWidth;H=innerHeight;c.width=W*dpr;c.height=H*dpr;c.style.width=W+'px';c.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);}
-  function draw(t){ctx.clearRect(0,0,W,H);for(const p of pts){const x=p.x*W+Math.sin(t*.00015+p.p)*16,y=p.y*H+Math.cos(t*.00011+p.p)*11;ctx.fillStyle=`rgba(255,240,250,${p.a})`;ctx.beginPath();ctx.arc(x,y,p.r,0,Math.PI*2);ctx.fill();}requestAnimationFrame(draw)}
-  addEventListener('resize',resize,{passive:true});resize();requestAnimationFrame(draw);
-}
+  function homeHTML(){
+    return `${roomFrame('The beginning','A small universe,<br><em>made for one person.</em>','Six rooms. Twenty-six photographs. Two little films. One song that stays with you while you move through it. Built to feel rich without making your phone suffer for the privilege.','')}
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">Start slowly</div>
+          <h2 style="font-size:clamp(48px,7vw,98px);margin-top:12px">Some things are too important to be <span class="accent">ordinary.</span></h2>
+          <p class="lede hero-sub">Enter when you have a minute. Read the little things. Watch the clips. Stay with the pictures. The point isn't to finish it quickly. The point is to feel it.</p>
+          <div class="actions"><button class="btn primary" data-route="memories">Begin with the memories →</button><button class="btn" data-route="letter">Read first →</button></div>
+          <div class="hero-kpis"><div class="kpi"><b>26</b>photographs</div><div class="kpi"><b>02</b>little films</div><div class="kpi"><b>01</b>soundtrack</div><div class="kpi"><b>∞</b>reasons</div></div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-orbit" aria-hidden="true"></div>
+          <div class="hero-frame"><img src="assets/p10.webp" width="720" height="900" fetchpriority="high" alt="A memory from the universe"><div class="hero-caption">Frame 10 · a face worth remembering</div></div>
+          <div class="hero-float hf1"><img src="assets/p04.webp" width="360" height="450" loading="lazy" alt="Memory detail"></div>
+          <div class="hero-float hf2"><img src="assets/p21.webp" width="360" height="450" loading="lazy" alt="Memory detail"></div>
+        </div>
+      </div>
+      <div class="room-cards">${[['memories','01','The Memories','photographs'],['cinema','02','Cinema','motion'],['letter','03','The Letter','words'],['museum','04','Museum','frames'],['forever','05','Forever','what stays']].map(([r,n,t,s])=>`<button class="room-card" data-route="${r}"><div class="room-card-art"><img src="assets/p${String((Number(n)*4+6)).padStart(2,'0')}.webp" loading="lazy" alt="${t}"></div><div class="room-card-copy"><strong>${t}</strong><span>${n} · ${s}</span></div></button>`).join('')}</div>`;
+  }
 
-/* ===== desktop cursor ===== */
-if(!touch&&!reduce){const c=$('.cursor'),l=$('.lumen'); if(c){addEventListener('pointermove',e=>{c.style.left=e.clientX+'px';c.style.top=e.clientY+'px';if(l){l.style.left=e.clientX+'px';l.style.top=e.clientY+'px';}},{passive:true});}}
+  function memoriesHTML(){
+    return `${roomFrame('Room 01 · Memories','A wall for the little things.','Twenty-six frames. Some polished, some imperfect, all real. Tap one, let it open, then take your time.','<div class="filter-row"><button class="filter active" data-mem-filter="all">All 26</button><button class="filter" data-mem-filter="first">First half</button><button class="filter" data-mem-filter="last">Second half</button><button class="btn primary" data-route="cinema">Next → Cinema</button></div>')}
+      <div class="memory-grid">${photos.map((f,i)=>`<button class="memory-card" data-photo-index="${i}"><img src="assets/${f}" loading="lazy" decoding="async" width="720" height="900" alt="${esc(captions[i])}"><div class="shade"><strong>${esc(captions[i])}</strong><span>Memory ${String(i+1).padStart(2,'0')}</span></div></button>`).join('')}</div>`;
+  }
 
-/* ===== mobile menu ===== */
-const menuButton=$('[data-menu]'), menuPanel=$('[data-menu-panel]');
-if(menuButton&&menuPanel){
-  const close=()=>{menuPanel.classList.remove('open');document.body.classList.remove('menu-open');};
-  menuButton.addEventListener('click',e=>{e.preventDefault();menuPanel.classList.toggle('open');document.body.classList.toggle('menu-open');burst(e.clientX||innerWidth-30,e.clientY||30);});
-  $$('.mobile-menu-inner a',menuPanel).forEach(a=>a.addEventListener('click',close));
-  menuPanel.addEventListener('click',e=>{if(e.target===menuPanel)close();});
-}
+  function cinemaHTML(){
+    return `${roomFrame('Room 02 · Cinema','A few seconds that move.','Two clips. No autoplay tricks. Press play when you are ready. Jaavedaan Hai pauses while a clip is playing, then continues when the film is done.','')}
+      <div class="cinema-grid"><div><div class="video-wrap"><video id="video" playsinline preload="metadata" poster="assets/v02.webp"></video><div class="video-controls"><button id="vPlay">Play</button><button id="vMute">Sound</button><input id="vSeek" type="range" min="0" max="100" value="0" aria-label="Video progress"><button id="vFull">Fullscreen</button></div></div><div class="cinema-note"><div class="eyebrow">Cinema note</div><h3>Keep the volume up.</h3><p>Some memories sound better in motion. Watch one, smile, replay it, and let the ordinary bits become the ones you remember most.</p><div class="actions"><button class="btn" data-route="letter">Next → Letter</button><button class="btn primary" data-route="museum">Skip to Museum →</button></div></div></div><div class="video-list"><div class="video-thumb"><button data-video-index="0"><img src="assets/v02.webp" loading="lazy" alt="Cinema clip one"><span>Motion / 01</span></button></div><div class="video-thumb"><button data-video-index="1"><img src="assets/v03.webp" loading="lazy" alt="Cinema clip two"><span>Motion / 02</span></button></div></div></div>`;
+  }
 
-/* ===== entry scene ===== */
-const entry=$('[data-entry]');
-if(entry){
-  const canvas=$('[data-entry-canvas]',entry), ctx=canvas?.getContext('2d');
-  if(canvas&&ctx&&!reduce&&!touch){let W=0,H=0;const bs=Array.from({length:touch?12:22},()=>({a:Math.random()*6.28,t:Math.random()*6.28}));const rs=()=>{W=canvas.width=innerWidth;H=canvas.height=innerHeight;canvas.style.width=W+'px';canvas.style.height=H+'px'};const draw=t=>{ctx.clearRect(0,0,W,H);for(const b of bs){b.a+=.01;b.t+=.03;const x=W/2+Math.cos(b.a)*Math.min(W,H)*(.22+.03*Math.sin(b.t));const y=H*.56-Math.abs(Math.sin(b.t))*H*.25;ctx.save();ctx.translate(x,y);ctx.rotate(Math.sin(b.t)*.5);ctx.globalAlpha=.22+.18*Math.sin(b.t);ctx.fillStyle='#ffb6da';ctx.beginPath();ctx.ellipse(-5,0,7,3,Math.sin(b.t),0,6.28);ctx.ellipse(5,0,7,3,-Math.sin(b.t),0,6.28);ctx.fill();ctx.restore();}requestAnimationFrame(draw)};addEventListener('resize',rs,{passive:true});rs();requestAnimationFrame(draw)}
-  const open=()=>{entry.classList.add('hidden');document.body.classList.remove('entry-lock');for(let i=0;i<(touch?14:26);i++)setTimeout(()=>burst(innerWidth/2+(Math.random()*180-90),innerHeight*.55+(Math.random()*160-80)),i*25);};
-  $('[data-enter]',entry)?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();open();});
-  entry.addEventListener('click',e=>{if(e.target===entry||e.target===canvas)open();});
-}
+  function letterHTML(){
+    return `${roomFrame('Room 03 · Letter','For the girl who made ordinary days glow.','I could have sent you a paragraph. Instead, I made a room you can enter whenever you need a little reminder that someone cared enough to make this.','<div class="actions"><button class="btn primary" data-route="museum">Open the Museum →</button><button class="btn" data-route="forever">Next chapter →</button></div>')}
+      <div class="letter-shell"><div class="letter-photo"><img src="assets/p10.webp" loading="lazy" decoding="async" width="720" height="900" alt="A memory"><div class="stamp">for you · always</div></div><div><div class="letter-quote">“The little minutes became the memories. Somehow, that was the whole point.”</div><p class="lede">You do not have to do anything with these. Just keep them as tiny reminders that there was softness here. The jokes. The silence. The random conversations. The days that looked ordinary until they became impossible to forget.</p><div class="letter-lines"><div class="letter-line">01 · The jokes that made absolutely no sense.<small>And somehow became the funniest things in the world.</small></div><div class="letter-line">02 · The tiny moments that nobody else noticed.<small>The ones that made a normal day feel different.</small></div><div class="letter-line">03 · Listening properly. Being gentle. Showing up.<small>Not dramatically. Just consistently.</small></div><div class="letter-line">04 · Learning the shape of another person's heart.<small>Slowly. Carefully. Imperfectly.</small></div><div class="letter-line">05 · This isn't a performance.<small>It is just a place to breathe, smile, and remember that someone cared enough to build it.</small></div></div></div></div>`;
+  }
 
-/* ===== tilt cards ===== */
-if(!touch&&!reduce){$$('.tilt,.room-card,.museum-card').forEach(el=>{el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;el.style.transform=`perspective(900px) rotateX(${(-y*2.2).toFixed(2)}deg) rotateY(${(x*2.5).toFixed(2)}deg) translateY(-2px)`},{passive:true});el.addEventListener('pointerleave',()=>el.style.removeProperty('transform'),{passive:true})});}
+  function museumHTML(){
+    return `${roomFrame('Room 04 · Museum','A wall for her.','Twenty-six frames arranged like a tiny private gallery. Tap any one. It opens larger.','<div class="actions"><button class="btn primary" data-route="forever">There is one last room →</button><button class="btn" data-route="memories">Back to the memories →</button></div>')}
+      <div class="museum-grid">${photos.map((f,i)=>`<button class="museum-card" data-photo-index="${i}"><img src="assets/${f}" loading="lazy" decoding="async" width="720" height="900" alt="Museum memory ${i+1}"><span>Frame ${String(i+1).padStart(2,'0')} · ${esc(captions[i])}</span></button>`).join('')}</div>`;
+  }
 
-/* ===== home hero canvas ===== */
-const heroCanvas=$('[data-space]');
-if(heroCanvas&&!reduce&&!touch){const ctx=heroCanvas.getContext('2d');let W=0,H=0;const stars=Array.from({length:touch?24:55},()=>({x:Math.random(),y:Math.random(),r:.5+Math.random()*1.3,p:Math.random()*6.28}));const rs=()=>{W=heroCanvas.width=innerWidth;H=heroCanvas.height=innerHeight;heroCanvas.style.width=W+'px';heroCanvas.style.height=H+'px'};const draw=t=>{ctx.clearRect(0,0,W,H);for(const s of stars){const x=s.x*W+Math.sin(t*.00018+s.p)*10,y=s.y*H+Math.cos(t*.00014+s.p)*8;ctx.fillStyle='rgba(255,255,255,.35)';ctx.beginPath();ctx.arc(x,y,s.r,0,6.28);ctx.fill()}requestAnimationFrame(draw)};addEventListener('resize',rs,{passive:true});rs();requestAnimationFrame(draw)}
+  function foreverHTML(){
+    return `${roomFrame('Room 05 · Forever','Some memories do not need permission to stay.','This is not a promise about the future. It is a place to keep what was real: the late-night conversations, the photographs, the laughter, the quiet, and the feeling of being understood.','')}
+      <div class="forever-list">${forever.map((x,i)=>`<article class="forever-panel"><div><div class="eyebrow">Memory ${String(i+1).padStart(2,'0')}</div><h2>${esc(x[0])}</h2><p class="lede">${esc(x[1])}</p><div class="memory-list"><div>Keep the ordinary details.</div><div>Remember how it felt, not just how it looked.</div><div>Let the good parts stay good.</div></div></div><img src="assets/${x[2]}" loading="lazy" decoding="async" width="720" height="900" alt="${esc(x[0])}"></article>`).join('')}</div>
+      <div class="end"><div class="glow">The last door is another beginning.</div><h2>Thank you for being real with me.</h2><p class="lede" style="margin:18px auto 0">A normal paragraph felt too small. So I built a little universe instead.</p><div class="actions" style="justify-content:center"><button class="btn" data-route="home">Back to the beginning</button><button class="btn primary" data-route="memories">Stay with the photographs</button></div></div>`;
+  }
 
-/* ===== memories carousel ===== */
-const film=$('[data-film]');
-if(film){const slides=$$('.film-slide',film),dots=$$('.film-dot',film),prev=$('[data-film-prev]',film),next=$('[data-film-next]',film);let idx=Math.max(0,slides.findIndex(s=>s.classList.contains('active')));const go=dir=>{idx=(idx+dir+slides.length)%slides.length;slides.forEach((s,i)=>s.classList.toggle('active',i===idx));dots.forEach((d,i)=>d.classList.toggle('active',i===idx));};prev?.addEventListener('click',()=>go(-1));next?.addEventListener('click',()=>go(1));dots.forEach((d,i)=>d.addEventListener('click',()=>go(i-idx)));let sx=0;film.addEventListener('touchstart',e=>sx=e.changedTouches[0].clientX,{passive:true});film.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(dx<0?1:-1)},{passive:true});}
+  document.querySelector('[data-room="home"]').innerHTML=homeHTML();
+  document.querySelector('[data-room="memories"]').innerHTML=memoriesHTML();
+  document.querySelector('[data-room="cinema"]').innerHTML=cinemaHTML();
+  document.querySelector('[data-room="letter"]').innerHTML=letterHTML();
+  document.querySelector('[data-room="museum"]').innerHTML=museumHTML();
+  document.querySelector('[data-room="forever"]').innerHTML=foreverHTML();
 
-/* ===== photo modal + museum filter ===== */
-const modal=$('[data-photo-modal]'),modalImg=$('[data-modal-img]'),modalCap=$('[data-modal-caption]');
-function openModal(file,cap){if(!modal||!modalImg)return;modalImg.src='assets/'+file;modalImg.alt=cap||'Memory';if(modalCap)modalCap.textContent=cap||'';modal.classList.add('open');document.body.classList.add('modal-open');}
-function closeModal(){modal?.classList.remove('open');document.body.classList.remove('modal-open');}
-$$('.open-photo,.museum-card').forEach(b=>b.addEventListener('click',()=>openModal(b.dataset.photo||'',b.dataset.caption||('memory '+(b.dataset.photo||'').replace('p','').replace('.webp','')))));
-$('[data-modal-close]')?.addEventListener('click',closeModal);modal?.addEventListener('click',e=>{if(e.target===modal)closeModal();});
-const museum=$('[data-museum]'); if(museum){$$('[data-filter]',museum).forEach(f=>f.addEventListener('click',()=>{const v=f.dataset.filter;$$('[data-filter]',museum).forEach(x=>x.classList.toggle('active',x===f));$$('.museum-card',museum).forEach(card=>{card.hidden=!(v==='all'||card.dataset.mood===v);});}));}
+  const music = document.getElementById('music');
+  const musicDock = document.getElementById('musicDock');
+  const musicToggle = document.getElementById('musicToggle');
 
-/* ===== cinema ===== */
-const video=$('[data-main-video]');
-if(video){
-  const sources=['v02.mp4','v03.mp4'];
-  const titles=['motion / 01','motion / 02','motion / 03','motion / 04','motion / 05'];
-  const thumbs=$$('[data-video-index]');
-  const play=$('[data-v-play]'),mute=$('[data-v-mute]'),vol=$('[data-v-volume]'),seek=$('[data-v-seek]'),time=$('[data-v-time]'),title=$('[data-v-title]');
-  let idx=0;
-  const fmt=s=>Number.isFinite(s)?`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`:'0:00';
-  const syncUI=()=>{
-    if(play)play.textContent=video.paused?'Play':'Pause';
-    if(mute)mute.textContent=video.muted?'Sound on':'Mute';
-    if(vol)vol.value=String(video.volume||.86);
-    if(seek)seek.value=video.duration?String(video.currentTime/video.duration*100):'0';
-    if(time)time.textContent=`${fmt(video.currentTime)} / ${fmt(video.duration)}`;
-  };
-  const load=i=>{
-    idx=((i%sources.length)+sources.length)%sources.length;
-    video.pause();
-    video.src='assets/'+sources[idx];
-    video.poster='assets/'+sources[idx].replace('.mp4','.webp');
-    video.preload='metadata';
-    video.muted=false;
-    video.volume=Number(vol?.value||.86);
-    video.load();
-    if(title)title.textContent=titles[idx];
-    thumbs.forEach((t,n)=>t.classList.toggle('active',n===idx));
-    if(play)play.textContent='Play';
-    if(mute)mute.textContent='Mute';
-    if(seek)seek.value='0';
-    if(time)time.textContent='0:00 / 0:00';
-  };
-  load(0);
-  thumbs.forEach(t=>t.addEventListener('click',()=>load(Number(t.dataset.videoIndex))));
-  play?.addEventListener('click',async()=>{
-    try{
-      if(video.paused){video.muted=false;await video.play();}
-      else video.pause();
-      syncUI();
-    }catch{toast('The browser blocked playback. Tap Play once more.');}
+  function saveMusic(){
+    try{localStorage.setItem('akku_music_time', String(music.currentTime||0)); localStorage.setItem('akku_music_playing', music.paused?'0':'1');}catch{}
+  }
+  function restoreMusic(){
+    try{const t=parseFloat(localStorage.getItem('akku_music_time')||'0'); if(Number.isFinite(t) && t>0 && music.duration) music.currentTime=Math.min(t,Math.max(0,music.duration-.25));}catch{}
+  }
+  function playMusic(){
+    musicReady=true;
+    music.play().then(()=>{musicDock.classList.remove('paused');musicToggle.textContent='❚❚';saveMusic();}).catch(()=>{});
+  }
+  function pauseMusic(){music.pause();musicDock.classList.add('paused');musicToggle.textContent='▶';saveMusic();}
+  music.addEventListener('loadedmetadata',restoreMusic,{once:true});
+  music.addEventListener('play',()=>{musicDock.classList.remove('paused');musicToggle.textContent='❚❚';saveMusic();});
+  music.addEventListener('pause',()=>{musicDock.classList.add('paused');musicToggle.textContent='▶';saveMusic();});
+  music.addEventListener('timeupdate',()=>{if(Math.floor(music.currentTime)%4===0)saveMusic();});
+  window.addEventListener('pagehide',saveMusic);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)saveMusic();});
+  musicToggle.addEventListener('click',()=>music.paused?playMusic():pauseMusic());
+
+  const roomMeta={home:['01','ORIGIN NODE'],memories:['02','MEMORY VAULT'],cinema:['03','MOTION CLUSTER'],letter:['04','PERSONAL INDEX'],museum:['05','GALLERY ARRAY'],forever:['06','ARCHIVE CORE']};
+
+  function route(room,push=true){
+    if(!rooms.includes(room)) room='home';
+    const previous=activeRoom;
+    activeRoom=room;
+    const currentEl=document.querySelector(`.room[data-room="${previous}"]`);
+    const nextEl=document.querySelector(`.room[data-room="${room}"]`);
+    if(currentEl && nextEl && previous!==room){
+      currentEl.classList.add('swipe-exit');
+      nextEl.classList.add('active','swipe-enter');
+      requestAnimationFrame(()=>nextEl.classList.add('swipe-enter-live'));
+      setTimeout(()=>currentEl.classList.remove('active','swipe-exit'),260);
+      setTimeout(()=>nextEl.classList.remove('swipe-enter','swipe-enter-live'),520);
+    } else {
+      document.querySelectorAll('.room').forEach(r=>r.classList.toggle('active',r.dataset.room===room));
+    }
+    document.querySelectorAll('[data-route]').forEach(b=>b.classList.toggle('active',b.dataset.route===room));
+    document.getElementById('roomChip').textContent=roomLabels[room].toUpperCase();
+    document.querySelector('[data-stat-room]').textContent=roomLabels[room].toUpperCase();
+    const meta=roomMeta[room]||['01','NODE']; document.querySelector('[data-node-id]').textContent=meta[0]; document.querySelector('.archive-drawer .drawer-head b').textContent=meta[0]+' // 06'; document.querySelector('.archive-hud').dataset.room=room; document.querySelector('.archive-badge').dataset.room=room;
+    document.getElementById('mobileNav').classList.remove('open');
+    if(push){history.pushState({room},'',`#${room}`);}else if(location.hash.slice(1)!==room){history.replaceState({room},'',`#${room}`)}
+    window.scrollTo({top:0,behavior:'auto'});
+    if(room==='cinema') setTimeout(()=>document.getElementById('video')?.focus({preventScroll:true}),120);
+  }
+
+  document.addEventListener('click',e=>{
+    const r=e.target.closest('[data-route]');
+    if(r){route(r.dataset.route);return;}
+    const m=e.target.closest('[data-mem-filter]');
+    if(m){
+      document.querySelectorAll('[data-mem-filter]').forEach(b=>b.classList.toggle('active',b===m));
+      document.querySelectorAll('[data-room="memories"] .memory-card').forEach((card,i)=>{card.hidden=m.dataset.memFilter==='first'?i>=13:m.dataset.memFilter==='last'?i<13:false;});
+      return;
+    }
+    const p=e.target.closest('[data-photo-index]');
+    if(p){openLightbox(Number(p.dataset.photoIndex));return;}
+    const v=e.target.closest('[data-video-index]');
+    if(v){loadVideo(Number(v.dataset.videoIndex),true);route('cinema',true);}
   });
-  mute?.addEventListener('click',()=>{
-    video.muted=!video.muted;
-    syncUI();
-    if(!video.paused)video.play().catch(()=>{});
-  });
-  vol?.addEventListener('input',()=>{
-    video.volume=Number(vol.value);
-    if(video.volume>0)video.muted=false;
-    syncUI();
-  });
-  seek?.addEventListener('input',()=>{if(video.duration)video.currentTime=Number(seek.value)/100*video.duration;syncUI();});
-  video.addEventListener('loadedmetadata',syncUI);
-  video.addEventListener('timeupdate',syncUI);
-  video.addEventListener('play',()=>{window.__akkuPauseForVideo?.();syncUI();});
-  video.addEventListener('pause',()=>{window.__akkuResumeAfterVideo?.();syncUI();});
-  video.addEventListener('play',()=>window.__akkuPauseForVideo?.());
-  video.addEventListener('pause',()=>window.__akkuResumeAfterVideo?.());
-  video.addEventListener('ended',()=>window.__akkuResumeAfterVideo?.());
-  video.addEventListener('error',()=>toast('This video could not be loaded.'));
-  video.addEventListener('play',()=>{window.__akkuPauseForVideo?.(); video.dataset.akkuResumeMusic='1';});
-  video.addEventListener('ended',()=>{if(video.dataset.akkuResumeMusic==='1'){video.dataset.akkuResumeMusic='';window.__akkuResumeAfterVideo?.();}});
-  $('[data-video-fullscreen]')?.addEventListener('click',()=>{const fn=video.requestFullscreen||video.webkitRequestFullscreen;if(fn)fn.call(video);});
-}
+  window.addEventListener('popstate',()=>route(location.hash.slice(1)||'home',false));
 
-/* ===== animated letter */
-const letter=$('[data-letter]'),orb=$('[data-letter-orb]');
-if(letter&&orb){orb.addEventListener('click',()=>{const first=!letter.classList.contains('opened');letter.classList.add('opened');if(first){$$('.letter-line').forEach((l,i)=>l.style.transitionDelay=(.2+i*.12)+'s');for(let i=0;i<(touch?15:26);i++)setTimeout(()=>burst(innerWidth/2+(Math.random()*180-90),innerHeight*.48+(Math.random()*180-90)),i*35);}});}
+  const menuBtn=document.getElementById('menuBtn'); const mobileNav=document.getElementById('mobileNav');
+  menuBtn.addEventListener('click',()=>mobileNav.classList.toggle('open'));
+  mobileNav.addEventListener('click',e=>{if(e.target===mobileNav)mobileNav.classList.remove('open')});
 
-/* ===== forever image drift ===== */
-if(!reduce&&!touch){$$('.forever-panel').forEach(panel=>{const img=$('img',panel);if(!img)return;const tick=()=>{const r=panel.getBoundingClientRect();const d=(r.top+r.height/2-innerHeight/2)/(innerHeight/2);img.style.transform=`translate3d(0,${Math.max(-14,Math.min(14,-d*8))}px,0) scale(${1.02+Math.max(0,1-Math.abs(d))*.02})`;};addEventListener('scroll',tick,{passive:true});tick();});}
-
-/* ===== home sound panel ===== */
-$('[data-sound-open]')?.addEventListener('click',()=>{$('[data-sound-panel]')?.classList.add('open')});$('[data-sound-close]')?.addEventListener('click',()=>{$('[data-sound-panel]')?.classList.remove('open')});
-
-/* ===== Escape closes overlays ===== */
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();menuPanel?.classList.remove('open');document.body.classList.remove('menu-open');}});
-})();
-
-/* ===== POLISH PASS INTERACTIONS ===== */
-(function polishPass(){
-  const reduced=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const touch='ontouchstart' in window || navigator.maxTouchPoints>0;
-  const q=(s,r=document)=>r.querySelector(s), qa=(s,r=document)=>Array.from(r.querySelectorAll(s));
-  const miniBurst=(x,y)=>{if(reduced || touch)return;for(let i=0;i<(touch?4:8);i++){const s=document.createElement('span');s.textContent=i%3===0?'♡':'✦';s.style.position='fixed';s.style.left=x+'px';s.style.top=y+'px';s.style.zIndex=14001;s.style.pointerEvents='none';s.style.color=['#ff9fc2','#a98cff','#9bdfff','#ffd7a4'][i%4];s.style.fontSize=(8+Math.random()*8)+'px';s.style.setProperty('--hx',(Math.random()*56-28)+'px');s.style.setProperty('--hy',(-20-Math.random()*36)+'px');s.style.animation='touchHeart .72s ease-out forwards';document.body.appendChild(s);setTimeout(()=>s.remove(),760)}};
-  document.addEventListener('pointerdown',e=>{const t=e.target;if(t.closest('button,a,input'))miniBurst(e.clientX,e.clientY)},{passive:true});
-
-  // Memory constellation
-  const mu=q('[data-memory-universe]');
-  if(mu){
-    const nodes=qa('[data-memory-node]',mu), read=q('[data-memory-readout]',mu), orbit=q('[data-memory-orbit]',mu), random=q('[data-memory-random]',mu);
-    let selected=-1,drag=false,startX=0,rot=0;
-    const renderRead=(i)=>{const b=nodes[i]; if(!b||!read)return; nodes.forEach(n=>n.classList.remove('selected'));b.classList.add('selected');selected=i; const title=b.dataset.caption||'memory'; read.innerHTML=`<span>MEMORY ${String(i+1).padStart(2,'0')}</span><b>${title}</b><small>Tap again to open the full frame.</small>`;};
-    nodes.forEach((b,i)=>b.addEventListener('click',()=>{renderRead(i); setTimeout(()=>{const m=document.querySelector('[data-photo-modal]');const img=document.querySelector('[data-modal-img]');const cap=document.querySelector('[data-modal-caption]');if(m&&img){img.src='assets/'+b.dataset.photo;if(cap)cap.textContent=b.dataset.caption||'';m.classList.add('open');document.body.classList.add('modal-open');}},160)}));
-    random?.addEventListener('click',()=>{let i=Math.floor(Math.random()*nodes.length);renderRead(i);miniBurst(innerWidth/2,innerHeight*.58)});
-    if(orbit){
-      const down=e=>{drag=true;startX=e.clientX||e.touches?.[0]?.clientX||0;orbit.classList.add('dragging')};
-      const move=e=>{if(!drag)return;const x=e.clientX||e.touches?.[0]?.clientX||startX;rot+=(x-startX)*.18;startX=x;nodes.forEach((n,i)=>n.style.setProperty('--manual-rot',rot+'deg'));orbit.style.transform=`rotate(${rot}deg)`};
-      const up=()=>{drag=false;orbit.classList.remove('dragging')};
-      orbit.addEventListener('pointerdown',down);window.addEventListener('pointermove',move,{passive:true});window.addEventListener('pointerup',up,{passive:true});
-    }
-  }
-
-  // Soundtrack enhancements
-  const st=q('.soundtrack');
-  if(st){
-    const audio=q('[data-audio]',st), bars=qa('[data-sound-visualizer] i',st), percent=q('[data-sound-percent]',st), status=q('[data-sound-status]',st);
-    qa('[data-scene-tag]',st).forEach(tag=>tag.addEventListener('click',()=>{qa('[data-scene-tag]',st).forEach(x=>x.classList.remove('active'));tag.classList.add('active');status&&(status.textContent=tag.dataset.tag==='soft'?'soft light mode':tag.dataset.tag==='late'?'late-night mode':'memory mode');}));
-    if(audio){audio.addEventListener('play',()=>st.classList.add('playing'));audio.addEventListener('pause',()=>st.classList.remove('playing'));audio.addEventListener('timeupdate',()=>{if(percent&&audio.duration)percent.textContent=Math.round(audio.currentTime/audio.duration*100)+'%';});}
-  }
-})();
-
-/* ===== 11/10 INTERACTION ENGINE ===== */
-(()=>{
-  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const fine = matchMedia("(pointer:fine)").matches;
-  const coarse = matchMedia("(pointer:coarse)").matches || 'ontouchstart' in window;
-  const touch = matchMedia("(pointer:coarse)").matches || 'ontouchstart' in window;
-  function spawn(x,y){
-    if(reduced || !fine) return;
-    const r=document.createElement("span");
-    r.className="touch-ripple"; r.style.left=x+"px"; r.style.top=y+"px";
-    document.body.appendChild(r); setTimeout(()=>r.remove(),620);
-    for(let i=0;i<6;i++){
-      const s=document.createElement("span"); s.className="touch-spark";
-      const a=(Math.PI*2*i/6)+(Math.random()-.5)*.3, d=18+Math.random()*28;
-      s.style.left=x+"px";s.style.top=y+"px";s.style.setProperty("--dx",`${Math.cos(a)*d}px`);
-      s.style.setProperty("--dy",`${Math.sin(a)*d}px`);s.style.setProperty("--c",["#ff8fc7","#8fe9ff","#c7a5ff","#ffe6a0"][i%4]);
-      document.body.appendChild(s); setTimeout(()=>s.remove(),650);
-    }
-    if(Math.random()<.7){
-      const h=document.createElement("span");h.className="mini-heart";
-      h.textContent=["♡","✦","♥","⋆"][Math.random()*4|0];
-      h.style.left=x+"px";h.style.top=y+"px";h.style.color="#ff9fce";
-      h.style.setProperty("--dx",`${Math.random()*44-22}px`);
-      h.style.setProperty("--dy",`${-25-Math.random()*28}px`);
-      document.body.appendChild(h);setTimeout(()=>h.remove(),820);
-    }
-  }
-  addEventListener("pointerdown",e=>{
-    if(e.pointerType==="mouse" && !fine) return;
-    if(e.button!==undefined && e.button!==0) return;
-    spawn(e.clientX,e.clientY);
-    const el=e.target.closest("button,a,.memory-card,.film-card,.track,.filter");
-    if(el && !touch){
-      el.animate(
-        [{transform:"scale(.97)"},{transform:"scale(1)"}],
-        {duration:180,easing:"cubic-bezier(.2,.8,.2,1)"}
-      );
-    }
+  // Touch-first room swipes. Deliberately event-driven: no rendering loop.
+  let swipeStartX=0, swipeStartY=0;
+  const roomOrder=rooms.slice();
+  document.addEventListener('touchstart',e=>{
+    if(e.touches.length!==1) return;
+    const t=e.changedTouches[0]; swipeStartX=t.clientX; swipeStartY=t.clientY;
   },{passive:true});
-  // magnetic hover on desktop
-  if(fine && !reduced){
-    document.querySelectorAll("[data-magnetic]").forEach(el=>{
-      el.addEventListener("pointermove",e=>{
-        const r=el.getBoundingClientRect(), dx=(e.clientX-(r.left+r.width/2))/r.width, dy=(e.clientY-(r.top+r.height/2))/r.height;
-        el.style.transform=`translate(${dx*7}px,${dy*7}px)`;
-      });
-      el.addEventListener("pointerleave",()=>el.style.transform="");
-    });
-  }
-  // transition curtain
-  if(!document.querySelector(".page-transition")){
-    const t=document.createElement("div");t.className="page-transition";document.body.appendChild(t);
-    document.querySelectorAll("a[href$='.html']").forEach(a=>{
-      a.addEventListener("click",e=>{
-        if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey) return;
-        const href=a.getAttribute("href"); if(!href || href.startsWith("#")) return;
-        e.preventDefault();t.classList.add("show");setTimeout(()=>location.href=href,220);
-      });
-    });
-  }
-})();
+  document.addEventListener('touchend',e=>{
+    if(document.getElementById('lightbox')?.classList.contains('open')) return;
+    if(document.getElementById('mobileNav')?.classList.contains('open')) return;
+    const t=e.changedTouches[0]; const dx=t.clientX-swipeStartX; const dy=t.clientY-swipeStartY;
+    if(Math.abs(dx)<72 || Math.abs(dx)<Math.abs(dy)*1.2) return;
+    const idx=roomOrder.indexOf(activeRoom);
+    const nextIdx=(idx+(dx<0?1:-1)+roomOrder.length)%roomOrder.length;
+    route(roomOrder[nextIdx]);
+  },{passive:true});
 
-/* ===== FINAL-RUNTIME-SAFETY ===== */
-(()=>{
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // Always keep reveal sections discoverable, even when IO is unavailable or a room is entered via cache.
-  const reveal = ()=>document.querySelectorAll('.reveal,.reveal-scale,.ultra-reveal').forEach(el=>{
-    const r=el.getBoundingClientRect();
-    if(reduce || r.top < innerHeight*1.08) el.classList.add('in','show');
+  function updateProgress(){const max=document.documentElement.scrollHeight-innerHeight;document.getElementById('progress').style.width=(max>0?scrollY/max*100:100)+'%';document.getElementById('topbar').classList.toggle('scrolled',scrollY>8)}
+  addEventListener('scroll',updateProgress,{passive:true}); addEventListener('resize',updateProgress,{passive:true}); updateProgress();
+
+  const video=document.getElementById('video');
+  const vPlay=document.getElementById('vPlay'); const vMute=document.getElementById('vMute'); const vSeek=document.getElementById('vSeek'); const vFull=document.getElementById('vFull');
+  function loadVideo(i,autoplay=false){cinemaIndex=i;const src=i===0?'assets/v02.mp4':'assets/v03.mp4'; video.pause();video.src=src;video.poster=src.replace('.mp4','.webp');video.load(); if(autoplay){resumeMusicAfterVideo=!music.paused; if(!music.paused)pauseMusic(); video.play().catch(()=>{});}}
+  vPlay.addEventListener('click',()=>{if(video.paused){resumeMusicAfterVideo=!music.paused; if(!music.paused)pauseMusic(); video.play().catch(()=>{});}else video.pause();});
+  vMute.addEventListener('click',()=>{video.muted=!video.muted;vMute.textContent=video.muted?'Sound off':'Sound'});
+  vSeek.addEventListener('input',()=>{if(video.duration)video.currentTime=(vSeek.value/100)*video.duration});
+  video.addEventListener('timeupdate',()=>{if(video.duration)vSeek.value=String(video.currentTime/video.duration*100)});
+  video.addEventListener('play',()=>{vPlay.textContent='Pause';if(!music.paused){resumeMusicAfterVideo=true;pauseMusic();}});
+  video.addEventListener('pause',()=>{vPlay.textContent='Play'});
+  video.addEventListener('ended',()=>{if(resumeMusicAfterVideo){resumeMusicAfterVideo=false;playMusic();}});
+  vFull.addEventListener('click',()=>{const f=video.requestFullscreen||video.webkitRequestFullscreen;if(f)f.call(video)});
+  loadVideo(0,false);
+
+  let lightIndex=0;
+  const lb=document.getElementById('lightbox'); const lbImg=document.getElementById('lightboxImg');
+  function openLightbox(i){lightIndex=i;lbImg.src=`assets/${photos[i]}`;lbImg.alt=captions[i];lb.classList.add('open');}
+  function closeLightbox(){lb.classList.remove('open')}
+  function stepLight(d){lightIndex=(lightIndex+d+photos.length)%photos.length;lbImg.src=`assets/${photos[lightIndex]}`;lbImg.alt=captions[lightIndex]}
+  document.getElementById('lbClose').addEventListener('click',closeLightbox);document.getElementById('lbPrev').addEventListener('click',()=>stepLight(-1));document.getElementById('lbNext').addEventListener('click',()=>stepLight(1));
+  lb.addEventListener('click',e=>{if(e.target===lb)closeLightbox()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();if(lb.classList.contains('open')){if(e.key==='ArrowLeft')stepLight(-1);if(e.key==='ArrowRight')stepLight(1)}});
+  let tx=0;lb.addEventListener('touchstart',e=>tx=e.changedTouches[0].clientX,{passive:true});lb.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40)stepLight(dx<0?1:-1)},{passive:true});
+
+  const guide=document.getElementById('guideOverlay');const guideSteps=[...guide.querySelectorAll('.guide-step')];const guideDots=[...guide.querySelectorAll('.guide-progress i')];let guideIndex=0;
+  const guideNext=document.getElementById('guideNext'), guideBack=document.getElementById('guideBack');
+  function guideShow(){guideSteps.forEach((s,i)=>s.classList.toggle('active',i===guideIndex));guideDots.forEach((d,i)=>d.classList.toggle('active',i===guideIndex));guideBack.style.display=guideIndex?'inline-flex':'none';guideNext.textContent=guideIndex===guideSteps.length-1?'Enter the Universe':'Next'}
+  guideNext.addEventListener('click',()=>{if(guideIndex<guideSteps.length-1){guideIndex++;guideShow();}else{guide.classList.add('hide');setTimeout(()=>guide.remove(),650);playMusic();}});
+  guideBack.addEventListener('click',()=>{guideIndex=Math.max(0,guideIndex-1);guideShow()});guideShow();
+
+  // Desktop-only, event-driven polish. No permanent rendering loop.
+  if(matchMedia('(pointer:fine)').matches){
+    document.addEventListener('pointermove',e=>{
+      document.documentElement.style.setProperty('--mx',e.clientX+'px');
+      document.documentElement.style.setProperty('--my',e.clientY+'px');
+    },{passive:true});
+    document.querySelectorAll('.room-card,.memory-card,.museum-card,.video-thumb').forEach(card=>{
+      card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5;const y=(e.clientY-r.top)/r.height-.5;card.style.transform=`translateY(-3px) perspective(900px) rotateX(${(-y*1.5).toFixed(2)}deg) rotateY(${(x*1.8).toFixed(2)}deg)`},{passive:true});
+      card.addEventListener('pointerleave',()=>{card.style.removeProperty('transform')},{passive:true});
+    });
+  }
+
+  // Detail pass: add tiny metadata ribbons to major visual blocks without extra rendering loops.
+  document.querySelectorAll('.room-head').forEach((el,i)=>{if(!el.querySelector('.detail-ribbon')){const r=document.createElement('div');r.className='detail-ribbon';r.innerHTML='<span>ARCHIVE TRACE</span><b>'+String(i+1).padStart(2,'0')+'</b><i></i><em>SYNCED</em>';el.appendChild(r)}});
+  document.querySelectorAll('.memory-card').forEach((el,i)=>el.style.setProperty('--card-index',i));
+  document.querySelectorAll('.forever-panel').forEach((el,i)=>el.dataset.archive=String(i+1).padStart(2,'0'));
+
+  // Reveal long sections when they enter view, no animation loop.
+  const revealObserver = 'IntersectionObserver' in window ? new IntersectionObserver(entries=>entries.forEach(en=>{if(en.isIntersecting){en.target.classList.add('section-in');revealObserver.unobserve(en.target)}}),{threshold:.08}) : null;
+  document.querySelectorAll('.forever-panel,.memory-card,.museum-card').forEach(el=>{if(revealObserver)revealObserver.observe(el)});
+
+  document.addEventListener('keydown',e=>{
+    if(!e.shiftKey) return;
+    const map={'1':'home','2':'memories','3':'cinema','4':'letter','5':'museum','6':'forever'};
+    if(map[e.key]){e.preventDefault();route(map[e.key]);}
   });
-  addEventListener('scroll', reveal, {passive:true});
-  addEventListener('resize', reveal, {passive:true});
-  setTimeout(reveal,80);
-  // Ensure any page-wipe overlay can never trap input.
-  const wipe=document.querySelector('[data-page-wipe]');
-  if(wipe){
-    wipe.style.pointerEvents='none';
-    setTimeout(()=>wipe.classList.remove('show'),700);
-  }
-  // Friendly focus/press feedback for keyboard and touch alike.
-  document.addEventListener('pointerdown', e=>{
-    const el=e.target.closest('button,a,.room-card,.museum-card,.film-slide,.track,.filter');
-    if(!el || coarse) return;
-    el.classList.add('is-pressed');
-    setTimeout(()=>el.classList.remove('is-pressed'),140);
-  }, {passive:true});
-})();
-
-
-/* ===== AKKU SINGLE-SONG MUSIC: persistent Jaavedaan Hai ===== */
-(()=>{
-  const KEY='akku.music.v3';
-  const read=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch{return null}};
-  const write=s=>{try{localStorage.setItem(KEY,JSON.stringify(s))}catch{}};
-  const init=()=>{
-    if(document.querySelector('[data-akku-music]')) return;
-    const prev=read();
-    const audio=document.createElement('audio');
-    audio.dataset.akkuMusic='1';
-    audio.src='assets/audio_3.mp3';
-    audio.preload='auto';
-    audio.loop=true;
-    audio.volume=.72;
-    audio.setAttribute('playsinline','');
-    audio.setAttribute('aria-label','Jaavedaan Hai');
-    audio.style.cssText='position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1';
-    document.body.appendChild(audio);
-
-    let resumeAfterVideo=false;
-    let restored=false;
-    const save=()=>write({time:Number.isFinite(audio.currentTime)?audio.currentTime:0,playing:!audio.paused&&!audio.ended});
-    const restoreAndMaybePlay=()=>{
-      if(restored)return;
-      restored=true;
-      const wasPlaying=!!prev?.playing;
-      if(prev&&Number.isFinite(prev.time)){
-        try{ audio.currentTime=Math.max(0,prev.time); }catch{}
-      }
-      if(wasPlaying){ audio.play().catch(()=>{}); }
-    };
-
-    window.__akkuMusic=audio;
-    window.__akkuSaveMusic=save;
-    window.__akkuPauseForVideo=()=>{
-      resumeAfterVideo=!audio.paused;
-      save();
-      audio.pause();
-      return resumeAfterVideo;
-    };
-    window.__akkuResumeAfterVideo=()=>{
-      if(!resumeAfterVideo)return;
-      resumeAfterVideo=false;
-      audio.play().then(save).catch(()=>{});
-    };
-
-    audio.addEventListener('loadedmetadata',restoreAndMaybePlay,{once:true});
-    let lastSave=0; audio.addEventListener('timeupdate',()=>{const now=Date.now();if(now-lastSave>1200){lastSave=now;save();}},{passive:true});
-    audio.addEventListener('pause',save,{passive:true});
-    audio.addEventListener('play',save,{passive:true});
-    addEventListener('pagehide',save,{passive:true});
-    addEventListener('beforeunload',save,{passive:true});
-    document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')save()},{passive:true});
-
-    // Browsers can block audible autoplay. Resume on the first allowed gesture.
-    const gesture=()=>{
-      if(prev?.playing) audio.play().catch(()=>{});
-      save();
-    };
-    document.addEventListener('pointerdown',gesture,{once:true,passive:true});
-    document.addEventListener('touchstart',gesture,{once:true,passive:true});
-    document.addEventListener('keydown',gesture,{once:true,passive:true});
-    document.querySelectorAll('a[href$=\".html\"],a[href$=\".html#\"] , .room-card, .btn, .nav-menu').forEach(el=>el.addEventListener('click',()=>{ audio.play().catch(()=>{}); },{passive:true}));
-  };
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
-  else init();
+  route(location.hash.slice(1)||'home',false);
 })();

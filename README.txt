@@ -1,31 +1,17 @@
-AKKÚ UNIVERSE — FINAL CHECKED BUILD
+AKKU REMAKE · HTML + CSS + JS
 
-GitHub Pages ready. No build step required.
+This rebuild is intentionally framework-free.
 
-Put these files/folders at the repository root:
-- index.html
-- memories.html
-- cinema.html
-- letter.html
-- museum.html
-- [removed: (sound page removed)]
-- forever.html
-- styles.css
-- app.js
-- assets/
+Files:
+- index.html: tiny document shell
+- styles.css: responsive UI and animation system
+- app.js: routing, music, cinema, memories, letter, museum, forever, guide
 
-Final verification pass:
-- 7 HTML rooms checked
-- 206 local HTML src/href references checked, 0 missing
-- JavaScript syntax checked with Node, 0 syntax errors
-- 69 media files decoded/verified, 0 bad files
-- 6 MP4s verified; 5 contain AAC stereo audio, v06 is intentionally silent
-- Single-song ambient music order: Kangana Tera Ni → Jaavedaan Hai → Humnava Mere → Haareya
-- Cinema playback starts unmuted from an explicit Play tap and keeps a Sound/Mute control
-- Removed the duplicate soundtrack script that referenced nonexistent photo files
-- Removed the duplicate navigation transition handler that could race clicks
-- Added modal image fallback from ultra-resolution to the normal WebP image
-- Museum includes the Forever destination at the top and a scroll destination
-- Mobile layout and touch interactions retained
-
-No external libraries or build tools are required.
+Design goals:
+- Mobile-first, responsive
+- Fast interactions
+- No permanent canvas render loops
+- No third-party dependencies
+- One persistent Jaavedaan Hai soundtrack using a single-page architecture
+- Cinema automatically pauses/resumes the soundtrack
+- Lazy-loaded photographs

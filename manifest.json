@@ -1,9 +1,0 @@
-{
-  "name": "AKKÚ / UNIVERSE",
-  "short_name": "AKKÚ",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#05050a",
-  "theme_color": "#05050a",
-  "icons": []
-}
