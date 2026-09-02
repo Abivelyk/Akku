@@ -64,7 +64,7 @@
       <button class="music-toggle" id="musicToggle" aria-label="Play music">▶</button>
       <div class="music-copy"><b>Jaavedaan Hai</b><span>AKKÚ · continuous soundtrack</span></div>
       <div class="music-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-      <audio id="music" preload="auto" loop playsinline src="assets/audio_3.mp3"></audio>
+      <audio id="music" preload="metadata" loop playsinline src="assets/audio_3.mp3"></audio>
     </div>
     <div class="overlay" id="guideOverlay">
       <div class="guide">
@@ -98,8 +98,6 @@
         <div class="hero-visual">
           <div class="hero-orbit" aria-hidden="true"></div>
           <div class="hero-frame"><img src="assets/p10.webp" width="720" height="900" fetchpriority="high" alt="A memory from the universe"><div class="hero-caption">Frame 10 · a face worth remembering</div></div>
-          <div class="hero-float hf1"><img src="assets/p04.webp" width="360" height="450" loading="lazy" alt="Memory detail"></div>
-          <div class="hero-float hf2"><img src="assets/p21.webp" width="360" height="450" loading="lazy" alt="Memory detail"></div>
         </div>
       </div>
       <div class="room-cards">${[['memories','01','The Memories','photographs'],['cinema','02','Cinema','motion'],['letter','03','The Letter','words'],['museum','04','Museum','frames'],['forever','05','Forever','what stays']].map(([r,n,t,s])=>`<button class="room-card" data-route="${r}"><div class="room-card-art"><img src="assets/p${String((Number(n)*4+6)).padStart(2,'0')}.webp" loading="lazy" alt="${t}"></div><div class="room-card-copy"><strong>${t}</strong><span>${n} · ${s}</span></div></button>`).join('')}</div>`;
@@ -142,11 +140,22 @@
   const musicDock = document.getElementById('musicDock');
   const musicToggle = document.getElementById('musicToggle');
 
-  function saveMusic(){
-    try{localStorage.setItem('akku_music_time', String(music.currentTime||0)); localStorage.setItem('akku_music_playing', music.paused?'0':'1');}catch{}
+  let lastMusicSaveBucket=-1;
+  function saveMusic(force=false){
+    try{
+      const time=Number(music.currentTime)||0;
+      const bucket=Math.floor(time/4);
+      if(!force && bucket===lastMusicSaveBucket) return;
+      lastMusicSaveBucket=bucket;
+      localStorage.setItem('akku_music_time', String(time));
+      localStorage.setItem('akku_music_playing', music.paused?'0':'1');
+    }catch{}
   }
   function restoreMusic(){
-    try{const t=parseFloat(localStorage.getItem('akku_music_time')||'0'); if(Number.isFinite(t) && t>0 && music.duration) music.currentTime=Math.min(t,Math.max(0,music.duration-.25));}catch{}
+    try{
+      const t=parseFloat(localStorage.getItem('akku_music_time')||'0');
+      if(Number.isFinite(t) && t>0 && music.duration) music.currentTime=Math.min(t,Math.max(0,music.duration-.25));
+    }catch{}
   }
   function playMusic(){
     musicReady=true;
@@ -156,9 +165,9 @@
   music.addEventListener('loadedmetadata',restoreMusic,{once:true});
   music.addEventListener('play',()=>{musicDock.classList.remove('paused');musicToggle.textContent='❚❚';saveMusic();});
   music.addEventListener('pause',()=>{musicDock.classList.add('paused');musicToggle.textContent='▶';saveMusic();});
-  music.addEventListener('timeupdate',()=>{if(Math.floor(music.currentTime)%4===0)saveMusic();});
-  window.addEventListener('pagehide',saveMusic);
-  document.addEventListener('visibilitychange',()=>{if(document.hidden)saveMusic();});
+  music.addEventListener('timeupdate',()=>saveMusic(false));
+  window.addEventListener('pagehide',()=>saveMusic(true));
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)saveMusic(true);});
   musicToggle.addEventListener('click',()=>music.paused?playMusic():pauseMusic());
 
   const roomMeta={home:['01','ORIGIN NODE'],memories:['02','MEMORY VAULT'],cinema:['03','MOTION CLUSTER'],letter:['04','PERSONAL INDEX'],museum:['05','GALLERY ARRAY'],forever:['06','ARCHIVE CORE']};
@@ -260,17 +269,36 @@
   guideNext.addEventListener('click',()=>{if(guideIndex<guideSteps.length-1){guideIndex++;guideShow();}else{guide.classList.add('hide');setTimeout(()=>guide.remove(),650);playMusic();}});
   guideBack.addEventListener('click',()=>{guideIndex=Math.max(0,guideIndex-1);guideShow()});guideShow();
 
-  // Desktop-only, event-driven polish. No permanent rendering loop.
-  if(matchMedia('(pointer:fine)').matches){
-    document.addEventListener('pointermove',e=>{
-      document.documentElement.style.setProperty('--mx',e.clientX+'px');
-      document.documentElement.style.setProperty('--my',e.clientY+'px');
-    },{passive:true});
-    document.querySelectorAll('.room-card,.memory-card,.museum-card,.video-thumb').forEach(card=>{
-      card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5;const y=(e.clientY-r.top)/r.height-.5;card.style.transform=`translateY(-3px) perspective(900px) rotateX(${(-y*1.5).toFixed(2)}deg) rotateY(${(x*1.8).toFixed(2)}deg)`},{passive:true});
-      card.addEventListener('pointerleave',()=>{card.style.removeProperty('transform')},{passive:true});
-    });
-  }
+  // Adaptive display engine: CSS does the heavy lifting; JS only exposes the live viewport metrics.
+  // This avoids device-specific hardcoding and lets phones, tablets, laptops and ultrawide monitors
+  // share the same fluid layout system.
+  (()=>{
+    const root=document.documentElement;
+    let frame=0;
+    const applyViewport=()=>{
+      frame=0;
+      const vv=window.visualViewport;
+      const w=Math.max(1,Math.round(vv?.width||window.innerWidth));
+      const h=Math.max(1,Math.round(vv?.height||window.innerHeight));
+      root.style.setProperty('--vw',w+'px');
+      root.style.setProperty('--vh',h+'px');
+      root.dataset.width=w<480?'phone-small':w<760?'phone':w<1040?'compact':w<1440?'desktop':'desktop-wide';
+      root.dataset.orientation=w>=h?'landscape':'portrait';
+      root.classList.toggle('touch-layout',matchMedia('(pointer:coarse)').matches || navigator.maxTouchPoints>0);
+    };
+    const schedule=()=>{if(!frame)frame=requestAnimationFrame(applyViewport)};
+    addEventListener('resize',schedule,{passive:true});
+    addEventListener('orientationchange',schedule,{passive:true});
+    vv?.addEventListener('resize',schedule,{passive:true});
+    if('ResizeObserver' in window){
+      const ro=new ResizeObserver(schedule);
+      const mainEl=document.querySelector('main');
+      if(mainEl)ro.observe(mainEl);
+    }
+    applyViewport();
+  })();
+
+  // Desktop polish is CSS-only: no pointer tracking, no per-card layout reads, no render loop.
 
   // Detail pass: add tiny metadata ribbons to major visual blocks without extra rendering loops.
   document.querySelectorAll('.room-head').forEach((el,i)=>{if(!el.querySelector('.detail-ribbon')){const r=document.createElement('div');r.className='detail-ribbon';r.innerHTML='<span>ARCHIVE TRACE</span><b>'+String(i+1).padStart(2,'0')+'</b><i></i><em>SYNCED</em>';el.appendChild(r)}});
@@ -286,23 +314,5 @@
     const map={'1':'home','2':'memories','3':'cinema','4':'letter','5':'museum','6':'forever'};
     if(map[e.key]){e.preventDefault();route(map[e.key]);}
   });
-  // Compact mobile room rail: one transform/opacity layer, no animation loop.
-  const rail=document.getElementById('mobileRail');
-  if(rail){
-    const prev=rail.querySelector('[data-rail-prev]');
-    const next=rail.querySelector('[data-rail-next]');
-    const label=rail.querySelector('[data-rail-label]');
-    const syncRail=()=>{
-      const idx=roomOrder.indexOf(activeRoom);
-      const p=roomOrder[(idx-1+roomOrder.length)%roomOrder.length];
-      const n=roomOrder[(idx+1)%roomOrder.length];
-      prev.dataset.railPrev=p; next.dataset.railNext=n; label.textContent=roomLabels[activeRoom].toUpperCase();
-    };
-    prev?.addEventListener('click',()=>route(prev.dataset.railPrev));
-    next?.addEventListener('click',()=>route(next.dataset.railNext));
-    const originalRoute=route;
-    route=(...args)=>{originalRoute(...args);requestAnimationFrame(syncRail)};
-    syncRail();
-  }
   route(location.hash.slice(1)||'home',false);
 })();
