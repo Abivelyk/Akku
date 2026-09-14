@@ -8,6 +8,7 @@ Files:
 - app.js: routing, music, cinema, memories, letter, museum, forever, guide
 
 Design goals:
+- Auto graphic devices depends on specifications to view full site make sure use at Least 1080P res 
 - Mobile forced 60fps, responsive and smooth.
 - Fast interactions with quick and swipe animations.
 - No permanent canvas render loops
