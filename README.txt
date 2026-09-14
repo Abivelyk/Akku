@@ -1,6 +1,6 @@
 AKKU REMAKE · HTML + CSS + JS
 
-This rebuild is intentionally framework-free.
+This is a rebuilt and too private but for repo and format its being shared through Git and steamLit......
 
 Files:
 - index.html: tiny document shell
