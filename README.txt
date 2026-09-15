@@ -17,4 +17,5 @@ Design goals:
 - Cinema automatically pauses/resumes the soundtrack
 - Lazy-loaded photographs.
 - glitched versions fixed and resolutions issues are finalized with further display/graphic issues
-- Github, steamlit and files
+- Github, steamlit and files.
+- clone upload
