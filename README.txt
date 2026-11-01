@@ -19,3 +19,4 @@ Design goals:
 - glitched versions fixed and resolutions issues are finalized with further display/graphic issues
 - Github, steamlit and files.
 - clone upload
+OLD GEMINI AND GPT MODEL WITH CLAUDE CSS FILE
